@@ -6,7 +6,7 @@
 
 using namespace std;
 
-struct Day
+struct Date
 {
 	//variables
 	string date;
@@ -15,7 +15,7 @@ struct Day
 	float precipitation;
 
 	//constructor
-	Day(string date, float air_temp, float wind_speed, float precipitation)
+	Date(string date, float air_temp, float wind_speed, float precipitation)
 	{
 		this->date = date;
 		this->air_temp = air_temp;
@@ -31,9 +31,15 @@ class City
 	string cityName;
 
 	//hashmap
-	unordered_map<Day*> days;
+	unordered_map<Date*> dates;
 
 public:
 
-	void Deserialize(fstream file);
+	//constructor
+	City(string& cityName);
+
+	//file management
+	void ReadFromCSVFile(string& filepath);
+	void Deserialize(istringstream& stream);
+	void AddDate(string date, string air_temp, string wind_speed, string precipitation);
 };
