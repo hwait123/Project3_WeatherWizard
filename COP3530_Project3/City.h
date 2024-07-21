@@ -44,5 +44,6 @@ public:
 	void Deserialize(istringstream& stream);
 	void AddDate(string date, string air_temp, string wind_speed, string precipitation);
 
+	//for testing
 	void PrintMap();
 };

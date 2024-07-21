@@ -28,6 +28,7 @@ void City::ReadFromCSVFile(string& filepath)
 		{
 			if (lineFromFile != "")
 			{
+				//read line and deserialize
 				istringstream stream(lineFromFile);
 				Deserialize(stream);
 			}
@@ -72,6 +73,7 @@ void City::Deserialize(istringstream& stream)
 		if (month.size() == 1)
 			month = "0" + month;
 
+		//reformat to "YYYY-MM-DD-00:00"
 		date = year + "-" + month + "-" + day + "-00:00";
 	}
 	else
