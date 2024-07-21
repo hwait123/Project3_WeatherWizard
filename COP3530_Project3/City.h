@@ -27,7 +27,7 @@ struct Date
 
 class City
 {
-public:
+
 	//to keep track of the city name
 	string cityName;
 
