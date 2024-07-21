@@ -27,11 +27,12 @@ struct Date
 
 class City
 {
+public:
 	//to keep track of the city name
 	string cityName;
 
 	//hashmap
-	unordered_map<Date*> dates;
+	unordered_map<string, Date*> dates;
 
 public:
 
@@ -42,4 +43,6 @@ public:
 	void ReadFromCSVFile(string& filepath);
 	void Deserialize(istringstream& stream);
 	void AddDate(string date, string air_temp, string wind_speed, string precipitation);
+
+	void PrintMap();
 };

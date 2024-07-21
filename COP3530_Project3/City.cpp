@@ -1,7 +1,6 @@
 #include <sstream>
-#include <filesystem>
 #include <iostream>
-#include <system_error>
+#include <iterator>
 
 #include "City.h"
 
@@ -46,41 +45,45 @@ void City::ReadFromCSVFile(string& filepath)
 void City::Deserialize(istringstream& stream)
 {
 	string token;
+	string date;
 
 	//get date from line
 	getline(stream, token, ',');
 
+	istringstream stream2(token);
+	string token2;
+
 	//check if date is in correct format
 	//reformat if needed
-	if (string[4] != '-')
+	if (token[4] != '-')
 	{
-		istringstream stream2(token);
-
-		string token2;
-		string day;
-		string month;
-		string year;
+		getline(stream2, token2, '/');
+		string month = token2;
 
 		getline(stream2, token2, '/');
 		string day = token2;
 
 		getline(stream2, token2, '/');
-		string month = token2;
-
-		getline(stream2, token2, '/');
 		string year = token2;
 
+		//add 0s for uniformality, if needed
 		if (day.size() == 1)
 			day = "0" + day;
-
 		if (month.size() == 1)
 			month = "0" + month;
 
-		string date = year + "-" + month + "-" + day + "T00:00Z";
+		date = year + "-" + month + "-" + day + "-00:00";
 	}
 	else
-		string date = token;
+	{
+		//reformat to "YYYY-MM-DD-TT:TT"
+		getline(stream2, token2, 'T');
+		date = token2;
 
+		getline(stream2, token2, 'Z');
+		date += "-" + token2;
+
+	}
 	//get air_temp from line
 	getline(stream, token, ',');
 	string air_temp = token;
@@ -92,6 +95,10 @@ void City::Deserialize(istringstream& stream)
 	//get precipitation from line
 	getline(stream, token, ',');
 	string precipitation = token;
+
+	//create date object and append to hashmap
+	AddDate(date, air_temp, wind_speed, precipitation);
+
 }
 
 void City::AddDate(string date, string air_temp, string wind_speed, string precipitation)
@@ -101,7 +108,16 @@ void City::AddDate(string date, string air_temp, string wind_speed, string preci
 	{
 		//create new date object
 		//and append to dates hashmap
-		Date* newDate = Date(date, stof(air_temp), stof(wind_speed), stof(precipitation));
+		Date* newDate = new Date(date, stof(air_temp), stof(wind_speed), stof(precipitation));
 		dates[date] = newDate;
 	}
+}
+
+//for testing
+void City::PrintMap()
+{
+	auto iter = dates.begin();
+
+	for (; iter != dates.end(); ++iter)
+		cout << iter->second->date << " " << iter->second->air_temp << " " << iter->second->wind_speed << " " << iter->second->precipitation << endl;
 }
