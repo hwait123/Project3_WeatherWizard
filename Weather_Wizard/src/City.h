@@ -37,12 +37,16 @@ class City
 public:
 
 	//constructor
-	City(string& cityName);
+	City(string cityName);
 
 	//file management
-	void ReadFromCSVFile(string& filepath);
+	void ReadAllFiles();
+	void ReadFromCSVFile(string filepath);
 	void Deserialize(istringstream& stream);
 	void AddDate(string date, string air_temp, string wind_speed, string precipitation);
+
+	//search
+	Date* FindDate(string date);
 
 	//for testing
 	void PrintMap();

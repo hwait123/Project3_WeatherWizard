@@ -6,14 +6,14 @@
 
 using namespace std;
 
-City::City(string& cityName)
+City::City(string cityName)
 {
 	this->cityName = cityName;
 }
 
 //read csv files annd create city objects
 //hannah burgett borrowed some code from her COP3503 lab7
-void City::ReadFromCSVFile(string& filepath)
+void City::ReadFromCSVFile(string filepath)
 {
 	//open file
 	ifstream inFile(filepath);
@@ -113,6 +113,18 @@ void City::AddDate(string date, string air_temp, string wind_speed, string preci
 		Date* newDate = new Date(date, stof(air_temp), stof(wind_speed), stof(precipitation));
 		dates[date] = newDate;
 	}
+}
+
+Date* City::FindDate(string date)
+{
+	if (dates.find(date) == dates.end())
+	{
+		cout << "Not found.";
+		return nullptr;
+	}
+
+
+	return dates[date];
 }
 
 //for testing
