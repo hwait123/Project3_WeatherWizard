@@ -16,14 +16,27 @@ int main()
 
     cout << "Welcome to the Weather Wizard!" << endl;
 
-//ASCII logo here, if possible
+    //ASCII logo here, if possible
 
     cout << "Please enter the name of the city you are visiting." << endl;
     cin >> cityInput;
 
+    ///////////////////////////////////////////////////////
     //
-    //need code to validate city input here
+    // need code to validate city input here
     //
+    ///////////////////////////////////////////////////////
+    
+    ///////////////////////////////////////////////////////
+    //
+    // also need to do one of two things:
+    // either format maps to automatically average hourly data and store it
+    // in "day" objects instead of hourly objects, or add a buffer between 
+    // user input and map, so user input is not directly fed into map (since
+    // we do not want the user to have to enter times as well as years, months, 
+    // and days)
+    //
+    ///////////////////////////////////////////////////////
 
     City newCity(cityInput);
     newCity.ReadAllFiles();
@@ -52,11 +65,20 @@ int main()
         cin >> departureInput;
     }
 
-    Date* resPtr = newCity.GetDate(arrivalInput);
+    ///////////////////////////////////////////////////////
+    //
+    // Run sorts on data, and format output, including time
+    // spent on each sort, in a clean-looking table
+    //
+    ///////////////////////////////////////////////////////
 
-    cout << resPtr->air_temp << endl;
-    cout << resPtr->wind_speed << endl;
-    cout << resPtr->precipitation << endl;
+    //temp code, for testing purposes*******************
+    //Date* resPtr = newCity.GetDate(arrivalInput);
+
+    //cout << resPtr->air_temp << endl;
+    //cout << resPtr->wind_speed << endl;
+    //cout << resPtr->precipitation << endl;
+    //**************************************************
 
     return 0;
 }
