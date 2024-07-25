@@ -6,14 +6,31 @@
 
 using namespace std;
 
-City::City(string& cityName)
+City::City(string cityName)
 {
 	this->cityName = cityName;
 }
 
+Date* City::GetDate(string date)
+{
+	//locate date and return ptr if found. return null else
+	if (dates.find(date) == dates.end())
+		return nullptr;
+
+	return dates[date];
+}
+
+void City::ReadAllFiles()
+{
+	//read all files for a given city. this will be adjusted when we add more files
+	for (int i = 0; i < 5; i++)
+		ReadFromCSVFile("Weather_Wizard/Project3_Data/" + cityName + "/" + cityName + "_" + to_string(2017 + i) + ".csv");
+
+}
+
 //read csv files annd create city objects
 //hannah burgett borrowed some code from her COP3503 lab7
-void City::ReadFromCSVFile(string& filepath)
+void City::ReadFromCSVFile(string filepath)
 {
 	//open file
 	ifstream inFile(filepath);
