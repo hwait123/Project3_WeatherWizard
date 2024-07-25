@@ -11,6 +11,15 @@ City::City(string cityName)
 	this->cityName = cityName;
 }
 
+Date* City::GetDate(string date)
+{
+	//locate date and return ptr if found. return null else
+	if (dates.find(date) == dates.end())
+		return nullptr;
+
+	return dates[date];
+}
+
 void City::ReadAllFiles()
 {
 	//read all files for a given city. this will be adjusted when we add more files
@@ -121,18 +130,6 @@ void City::AddDate(string date, string air_temp, string wind_speed, string preci
 		Date* newDate = new Date(date, stof(air_temp), stof(wind_speed), stof(precipitation));
 		dates[date] = newDate;
 	}
-}
-
-Date* City::FindDate(string date)
-{
-	//locate date and return ptr if found. return null else
-	if (dates.find(date) == dates.end())
-	{
-		cout << "Not found.";
-		return nullptr;
-	}
-
-	return dates[date];
 }
 
 //for testing

@@ -39,6 +39,9 @@ public:
 	//constructor
 	City(string cityName);
 
+	//getters
+	Date* GetDate(string date);
+
 	//file management
 	void ReadAllFiles();
 	void ReadFromCSVFile(string filepath);
@@ -46,7 +49,6 @@ public:
 	void AddDate(string date, string air_temp, string wind_speed, string precipitation);
 
 	//search
-	Date* FindDate(string date);
 
 	//for testing
 	void PrintMap();
