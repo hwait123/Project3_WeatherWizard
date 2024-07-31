@@ -3,14 +3,15 @@
 
 #include "City.h"
 
-string FindCity(int input);
+string FindCity (string input);
 bool IsValidCity(string city);
 bool IsValidDate(City city, string date);
 bool IsValidRange(string arrivalDate, string departureDate);
 
 int main()
 {
-    string cityInput;
+    string cityNum;
+    string cityName;
     string arrivalInput;
     string departureInput;
 
@@ -31,7 +32,15 @@ int main()
     cout << "Please enter the number corresponding with the city you wish to research." << endl;
     cout << "For example, please enter 1 for Gainesville." << endl;
     
-    cin >> cityInput;
+    cin >> cityNum;
+    cityName = FindCity(cityNum);
+
+    while (!IsValidCity(cityName))
+    {
+        cout << "Sorry! We cannot find that City. Please enter a number from the menu above." << endl;
+        cin >> cityNum;
+        cityName = FindCity(cityNum);
+    }
 
     ///////////////////////////////////////////////////////
     //
@@ -50,7 +59,7 @@ int main()
     //
     ///////////////////////////////////////////////////////
 
-    City newCity(cityInput);
+    City newCity(cityName);
     newCity.ReadAllFiles();
 
     cout << "Exellent choice! Now, enter your intended arrival date, formatted YYYY-MM-DD." << endl;
@@ -95,17 +104,17 @@ int main()
     return 0;
 }
 
-string FindCity(int input)
+string FindCity(string input)
 {
-    if (input == 1)
+    if (input == "1")
         return "Gainesville";
-    if (input == 2)
+    if (input == "2")
         return "Jacksonville";
-    if (input == 3)
+    if (input == "3")
         return "Miami"; 
-    if (input == 4)
+    if (input == "4")
         return "Orlando";
-    if (input == 5)
+    if (input == "5")
         return "Tampa";
 
     return "";
