@@ -4,6 +4,7 @@
 #include "City.h"
 
 string FindCity(int input);
+bool IsValidCity(string city);
 bool IsValidDate(City city, string date);
 bool IsValidRange(string arrivalDate, string departureDate);
 
@@ -98,6 +99,13 @@ string FindCity(int input)
         return "Tampa";
 
     return "";
+}
+
+bool IsValidCity(string city)
+{
+    if (city == "")
+        return false;
+    return true;
 }
 
 bool IsValidDate(City city, string date)
