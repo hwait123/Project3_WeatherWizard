@@ -7,6 +7,7 @@ string FindCity (string input);
 bool IsValidCity(string city);
 bool IsValidDate(City city, string date);
 bool IsValidRange(string arrivalDate, string departureDate);
+void LoadAllCities();
 
 int main()
 {
@@ -27,7 +28,9 @@ int main()
     cout << "2. Jacksonville" << endl;
     cout << "3. Miami" << endl;
     cout << "4. Orlando" << endl;
-    cout << "5. Tampa" << endl << endl;
+    cout << "5. Tampa" << endl; 
+    //cout << "6. Give me them all!" << endl;
+    cout << endl;
 
     cout << "Please enter the number corresponding with the city you wish to research." << endl;
     cout << "For example, please enter 1 for Gainesville." << endl;
@@ -41,12 +44,6 @@ int main()
         cin >> cityNum;
         cityName = FindCity(cityNum);
     }
-
-    ///////////////////////////////////////////////////////
-    //
-    // need code to validate city input here
-    //
-    ///////////////////////////////////////////////////////
     
     ///////////////////////////////////////////////////////
     //
@@ -59,10 +56,26 @@ int main()
     //
     ///////////////////////////////////////////////////////
 
+    /*if (cityName == "All")
+    {
+        cout << "We're not sure why you want information on all cities... but your wish is Weather Wizard's command!" << endl;
+        cout << "(Wait... this isn't Weather Genie!)" << endl << endl;
+        LoadAllCities();
+
+        cout << "Please enter a start date for your search, formatted YYYY-MM-DD." << endl;
+    }
+
+    else
+    {
+        City newCity(cityName);
+        newCity.ReadAllFiles();
+        cout << "Exellent choice! Now, enter your intended arrival date, formatted YYYY-MM-DD." << endl;
+    }*/
+
     City newCity(cityName);
     newCity.ReadAllFiles();
 
-    cout << "Exellent choice! Now, enter your intended arrival date, formatted YYYY-MM-DD." << endl;
+    cout << endl << "Exellent choice! Now, enter your intended arrival date, formatted YYYY-MM-DD." << endl;
     cin >> arrivalInput;
 
     //chceck for input validity
@@ -142,4 +155,22 @@ bool IsValidRange(string arrivalDate, string departureDate)
     if (arrivalDate > departureDate)
         return false;
     return true;
+}
+
+void LoadAllCities()
+{
+    City Gainesville("Gainesville");
+    Gainesville.ReadAllFiles();
+
+    City Jacksonville("Jacksonville");
+    Jacksonville.ReadAllFiles();
+
+    City Miami("Miami");
+    Miami.ReadAllFiles();
+
+    City Orlando("Orlando");
+    Orlando.ReadAllFiles();
+
+    City Tampa("Tampa");
+    Tampa.ReadAllFiles();
 }

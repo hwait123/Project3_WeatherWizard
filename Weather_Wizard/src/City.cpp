@@ -23,8 +23,8 @@ Date* City::GetDate(string date)
 void City::ReadAllFiles()
 {
 	//read all files for a given city. this will be adjusted when we add more files
-	for (int i = 0; i < 5; i++)
-		ReadFromCSVFile("Weather_Wizard/Project3_Data/" + cityName + "/" + cityName + "_" + to_string(2017 + i) + ".csv");
+	for (int i = 0; i < 12; i++)
+		ReadFromCSVFile("Weather_Wizard/Project3_Data/" + cityName + "/" + cityName + "_" + to_string(2010 + i) + ".csv");
 
 }
 
