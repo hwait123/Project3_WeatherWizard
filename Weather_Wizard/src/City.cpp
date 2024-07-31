@@ -15,7 +15,7 @@ vector<Date*> City::GetDate(string date)
 {
 	//locate date and return ptr if found. return null else
 	if (dates.find(date) == dates.end())
-		return {0};
+		return {};
 
 	return dates[date];
 }
