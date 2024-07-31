@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <map>
 #include <string>
 #include <fstream>
 
@@ -31,8 +32,9 @@ class City
 	//to keep track of the city name
 	string cityName;
 
-	//hashmap
-	unordered_map<string, Date*> dates;
+	//might go back to an unorder_map depending on time
+	//a regular map keeps dates in order for ease of searching date ranges
+	map<string, vector<Date*>> dates;
 
 public:
 
@@ -40,13 +42,13 @@ public:
 	City(string cityName);
 
 	//getters
-	Date* GetDate(string date);
+	vector<Date*> GetDate(string date);
 
 	//file management
 	void ReadAllFiles();
 	void ReadFromCSVFile(string filepath);
 	void Deserialize(istringstream& stream);
-	void AddDate(string date, string air_temp, string wind_speed, string precipitation);
+	void AddDate(string date, string time, string air_temp, string wind_speed, string precipitation);
 
 	//search
 

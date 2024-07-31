@@ -143,8 +143,9 @@ bool IsValidCity(string city)
 bool IsValidDate(City city, string date)
 {
     //check if date as inputted exists
-    if (city.GetDate(date) == nullptr)
-        return false;
+    //commenting out just for now
+    //if (city.GetDate(date) == nullptr)
+        //return false;
     return true;
 }
 

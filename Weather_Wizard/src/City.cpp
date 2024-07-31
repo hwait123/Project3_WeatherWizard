@@ -11,11 +11,11 @@ City::City(string cityName)
 	this->cityName = cityName;
 }
 
-Date* City::GetDate(string date)
+vector<Date*> City::GetDate(string date)
 {
 	//locate date and return ptr if found. return null else
 	if (dates.find(date) == dates.end())
-		return nullptr;
+		return {0};
 
 	return dates[date];
 }
@@ -64,6 +64,7 @@ void City::Deserialize(istringstream& stream)
 {
 	string token;
 	string date;
+	string time;
 
 	//get date from line
 	getline(stream, token, ',');
@@ -91,7 +92,10 @@ void City::Deserialize(istringstream& stream)
 			month = "0" + month;
 
 		//reformat to "YYYY-MM-DD-00:00"
-		date = year + "-" + month + "-" + day + "-00:00";
+		//date = year + "-" + month + "-" + day + "-00:00";
+		date = year + "-" + month + "-" + day;
+		time = "00:00";
+
 	}
 	else
 	{
@@ -100,7 +104,7 @@ void City::Deserialize(istringstream& stream)
 		date = token2;
 
 		getline(stream2, token2, 'Z');
-		date += "-" + token2;
+		time = token2;
 
 	}
 	//get air_temp from line
@@ -116,27 +120,39 @@ void City::Deserialize(istringstream& stream)
 	string precipitation = token;
 
 	//create date object and append to hashmap
-	AddDate(date, air_temp, wind_speed, precipitation);
+	AddDate(date, time, air_temp, wind_speed, precipitation);
 
 }
 
-void City::AddDate(string date, string air_temp, string wind_speed, string precipitation)
+void City::AddDate(string date, string time, string air_temp, string wind_speed, string precipitation)
 {
 	//check if date already exists
-	if (dates.find(date) == dates.end())
+	/*if (dates.find(date) == dates.end())
 	{
 		//create new date object
 		//and append to dates hashmap
 		Date* newDate = new Date(date, stof(air_temp), stof(wind_speed), stof(precipitation));
 		dates[date] = newDate;
-	}
+	}*/
+	Date* newDate = new Date(date + "-" +  time, stof(air_temp), stof(wind_speed), stof(precipitation));
+	dates[date].push_back(newDate);
 }
 
 //for testing
-void City::PrintMap()
+/*void City::PrintMap()
 {
 	auto iter = dates.begin();
 
 	for (; iter != dates.end(); ++iter)
 		cout << iter->second->date << " " << iter->second->air_temp << " " << iter->second->wind_speed << " " << iter->second->precipitation << endl;
+}*/
+
+void City::PrintMap()
+{
+	auto iter = dates.begin();
+	for (; iter != dates.end(); ++iter)
+	{
+		for (int i = 0; i < iter->second.size(); i++)
+			cout << iter->second[i]->date << " " << iter->second[i]->air_temp << " " << iter->second[i]->wind_speed << " " << iter->second[i]->precipitation << endl;
+	}
 }
