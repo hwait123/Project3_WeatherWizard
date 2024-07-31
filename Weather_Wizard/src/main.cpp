@@ -44,18 +44,8 @@ int main()
         cin >> cityNum;
         cityName = FindCity(cityNum);
     }
-    
-    ///////////////////////////////////////////////////////
-    //
-    // also need to do one of two things:
-    // either format maps to automatically average hourly data and store it
-    // in "day" objects instead of hourly objects, or add a buffer between 
-    // user input and map, so user input is not directly fed into map (since
-    // we do not want the user to have to enter times as well as years, months, 
-    // and days)
-    //
-    ///////////////////////////////////////////////////////
 
+    //might use this, commented out for now
     /*if (cityName == "All")
     {
         cout << "We're not sure why you want information on all cities... but your wish is Weather Wizard's command!" << endl;
@@ -85,7 +75,7 @@ int main()
         cin >> arrivalInput;
     }
 
-    cout << "Enter your intended departure date, formatted YYYY-MM-DD." << endl;
+    cout << endl<< "Enter your intended departure date, formatted YYYY-MM-DD." << endl;
     cin >> departureInput;
 
     //validate departure date input
@@ -106,13 +96,38 @@ int main()
     //
     ///////////////////////////////////////////////////////
 
-    //temp code, for testing purposes*******************
-    //Date* resPtr = newCity.GetDate(arrivalInput);
+    cout << endl << endl << "Making magic happen..." << endl << endl;
 
-    //cout << resPtr->air_temp << endl;
-    //cout << resPtr->wind_speed << endl;
-    //cout << resPtr->precipitation << endl;
-    //**************************************************
+    //results
+    cout << endl << "For dates " << arrivalInput << " through " << departureInput << ":" << endl << endl;
+    
+    cout << "(Calculated with [insert sort here], which took [time spent here])" << endl;
+    cout << "Highest temperature: " << endl;
+    //print highest temperature on what day
+    cout << "Lowest temperature: " << endl;
+    //print lowest temperature on what day
+
+    //Keep to fasted and highest precipitation, because slowest and lowest will probably be 0
+    //might change mind here
+    cout << "Fastest wind speed: " << endl;
+    //print results
+    cout << "Highest precipitation: " << endl;
+    //print results
+
+    //*******************************************************************************
+    //repeated with second sort
+    cout << endl << "(Calculated with [insert sort here], which took [time spent here])" << endl;
+    cout << "Highest temperature: " << endl;
+    //print highest temperature on what day
+    cout << "Lowest temperature: " << endl;
+    //print lowest temperature on what day
+
+    //Keep to fasted and highest precipitation, because slowest and lowest will probably be 0
+    //might change mind here
+    cout << "Fastest wind speed: " << endl;
+    //print results
+    cout << "Highest precipitation: " << endl;
+    //print results
 
     return 0;
 }
@@ -151,7 +166,6 @@ bool IsValidDate(City city, string date)
 bool IsValidRange(string arrivalDate, string departureDate)
 {
     //I think this will work, but need to test;
-
     if (arrivalDate > departureDate)
         return false;
     return true;
