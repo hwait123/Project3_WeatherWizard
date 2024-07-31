@@ -40,7 +40,7 @@ int main()
 
     while (!IsValidCity(cityName))
     {
-        cout << "Sorry! We cannot find that City. Please enter a number from the menu above." << endl;
+        cout << "Sorry! We cannot find that city. Please enter a number from the menu above." << endl;
         cin >> cityNum;
         cityName = FindCity(cityNum);
     }
