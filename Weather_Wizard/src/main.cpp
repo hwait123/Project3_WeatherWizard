@@ -17,10 +17,20 @@ int main()
     City ReadAllFiles("Gainesville");
 
     cout << "Welcome to the Weather Wizard!" << endl;
+    cout << "If you are planning a trip to the beautiful state of Florida, Weather Wizard is here to help!" << endl << endl;
 
     //ASCII logo here, if possible
 
-    cout << "Please enter the name of the city you are visiting." << endl;
+    cout << "Weather Wizard is programmed to provide weather information for the following cities:" << endl;
+    cout << "1. Gainesville" << endl;
+    cout << "2. Jacksonville" << endl;
+    cout << "3. Miami" << endl;
+    cout << "4. Orlando" << endl;
+    cout << "5. Tampa" << endl << endl;
+
+    cout << "Please enter the number corresponding with the city you wish to research." << endl;
+    cout << "For example, please enter 1 for Gainesville." << endl;
+    
     cin >> cityInput;
 
     ///////////////////////////////////////////////////////
