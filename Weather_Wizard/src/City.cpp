@@ -1,6 +1,7 @@
 #include <sstream>
 #include <iostream>
 #include <iterator>
+#include <vector>
 
 #include "City.h"
 
