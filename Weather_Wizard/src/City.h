@@ -51,8 +51,10 @@ public:
 	void Deserialize(istringstream& stream);
 	void AddDate(string date, string time, string air_temp, string wind_speed, string precipitation);
 	Date averageData(const vector<Date*>& date_);
+    Date *findHighestTemperature(map<string, vector<Date *>> &dates);
+    Date *findLowestTemperature(map<string, vector<Date *>> &dates);
 
-	//search
+    //search
 
 	//for testing
 	void PrintMap();

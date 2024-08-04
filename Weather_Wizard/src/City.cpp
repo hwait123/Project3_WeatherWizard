@@ -1,11 +1,12 @@
 #include <sstream>
 #include <iostream>
 #include <iterator>
-#include <vector>
-
+#include <chrono>
+#include <algorithm>
 #include "City.h"
 
 using namespace std;
+using namespace std::chrono;
 
 City::City(string cityName)
 {
@@ -171,4 +172,37 @@ Date City::averageData(const vector<Date*>& date_) {
     }
 	//Returns the first hour's name, but an averaged float for all other data
 	return Date(date_[0]->date, averageTemp / totalHours, averageWindSpeed / totalHours, averagePrecipitation / totalHours); 
+}
+
+Date* City::findHighestTemperature(map<string, vector<Date*>>& dates) {
+    auto start = high_resolution_clock::now(); // Start timing
+
+    if (dates.empty()) {
+        throw invalid_argument("The map is empty.");
+    }
+
+    vector<Date*> allAverages;
+    for (auto& entry : dates) {
+        if (!entry.second.empty()) {
+            allAverages.push_back(entry.second[0]); // Assuming each vector has only one averaged Date object
+        }
+    }
+
+    if (allAverages.empty()) {
+        throw runtime_error("No valid Date objects found.");
+    }
+
+    // Use std::sort to sort the dates by air_temp in descending order
+    sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
+        return a->air_temp > b->air_temp;
+    });
+
+    // The first element after sorting will have the highest temperature
+    Date* highestTempDate = allAverages.front();
+
+    auto end = high_resolution_clock::now(); // End timing
+    duration<double> elapsed = end - start; // Calculate elapsed time
+    cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
+
+    return highestTempDate;
 }
