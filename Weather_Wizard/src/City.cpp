@@ -156,3 +156,18 @@ void City::PrintMap()
 			cout << iter->second[i]->date << " " << iter->second[i]->air_temp << " " << iter->second[i]->wind_speed << " " << iter->second[i]->precipitation << endl;
 	}
 }
+
+Date City::averageData(const vector<Date*>& date_) {
+	float averageTemp = 0.0f;
+	float averageWindSpeed = 0.0f;
+	float averagePrecipitation = 0.0f;
+	int totalHours = date_.size();
+	//For every element in our 'date' vector (every hour) add it's value to the average
+	for (const auto& data : date_) { 
+        averageTemp += data->air_temp;
+        averageWindSpeed += data->wind_speed;
+        averagePrecipitation += data->precipitation;
+    }
+	//Returns the first hour's name, but an averaged float for all other data
+	return Date(date_[0]->date, averageTemp / totalHours, averageWindSpeed / totalHours, averagePrecipitation / totalHours); 
+}

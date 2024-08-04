@@ -50,6 +50,7 @@ public:
 	void ReadFromCSVFile(string filepath);
 	void Deserialize(istringstream& stream);
 	void AddDate(string date, string time, string air_temp, string wind_speed, string precipitation);
+	Date averageData(const vector<Date*>& date_);
 
 	//search
 
