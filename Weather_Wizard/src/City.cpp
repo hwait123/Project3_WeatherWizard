@@ -266,3 +266,34 @@ Date* City::findMaxWindSpeed(map<string, vector<Date*>>& dates) {
 
     return maxWindSpeedDate;
 }
+
+Date* City::findMaxPrecipitation(map<string, vector<Date*>>& dates) {
+    auto start = high_resolution_clock::now();
+
+    if (dates.empty()) {
+        throw invalid_argument("The map is empty.");
+    }
+
+    vector<Date*> allAverages;
+    for (auto& entry : dates) {
+        if (!entry.second.empty()) {
+            allAverages.push_back(entry.second[0]);
+        }
+    }
+
+    if (allAverages.empty()) {
+        throw runtime_error("No valid Date objects found.");
+    }
+
+    sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
+        return a->precipitation > b->precipitation;
+    });
+
+    Date* maxPrecipitationDate = allAverages.front();
+
+    auto end = high_resolution_clock::now();
+    duration<double> elapsed = end - start;
+    cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
+
+    return maxPrecipitationDate;
+}
