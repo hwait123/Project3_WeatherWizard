@@ -53,6 +53,8 @@ public:
 	Date averageData(const vector<Date*>& date_);
     Date *findHighestTemperature(map<string, vector<Date *>> &dates);
     Date *findLowestTemperature(map<string, vector<Date *>> &dates);
+	Date* findMaxWindSpeed(map<string, vector<Date*>>& dates);
+
 
     //search
 
