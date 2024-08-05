@@ -61,6 +61,8 @@ public:
 	pair <Date*, duration<double, micro>> findLowestTemperature(map<string, Date*>& dates_, const string& sortMethod);
 	pair <Date*, duration<double, micro>> findMaxWindSpeed(map<string, Date*>& dates_, const string& sortMethod);
 	pair <Date*, duration<double, micro>> findMaxPrecipitation(map<string, Date*>& dates_, const string& sortMethod);
+	
+	//sorting
 	Date* GetResultStdSort(pair <string, string> sortBasedOn, vector<Date*>& allAverages);
 	vector<Date*> slice(const vector<Date*>& dates, int start, int end);
 	vector<Date*> merge(vector<Date*> left, vector<Date*> right, const string& sortBasedOn);
@@ -70,9 +72,4 @@ public:
 	void assembleMapBetweenDates(map<string, Date*>& newMap, const string& startDate, const string& endDate);
 	int dateToInt(const string& date);
 	void LoadAveragesVec(vector<Date*>& allAverages, map<string, Date*>& dates_);
-
-    //search
-
-	//for testing
-	void PrintMap();
 };

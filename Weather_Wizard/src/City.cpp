@@ -127,6 +127,7 @@ void City::Deserialize(istringstream& stream)
 
 void City::AddDate(string date, string time, string air_temp, string wind_speed, string precipitation)
 {
+    //create new date object using parsed info from deserialization
 	Date* newDate = new Date(date + "-" +  time, stof(air_temp), stof(wind_speed), stof(precipitation));
 	dates[date].push_back(newDate);
 }
@@ -148,12 +149,14 @@ Date* City::averageData(const vector<Date*>& date_) {
 }
 
 pair <Date*, duration<double, micro>> City::findHighestTemperature(map<string, Date*>& dates_, const string& sortMethod) {
+    //begin timing
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
         throw invalid_argument("The map is empty.");
     }
 
+    //add map's data to vector for easy sorting
     vector<Date*> allAverages;
     LoadAveragesVec(allAverages, dates_);
 
@@ -166,6 +169,7 @@ pair <Date*, duration<double, micro>> City::findHighestTemperature(map<string, D
         highestTempDate = sortedDates.back(); // Last element has the highest temperature
     }
 
+    //calculate time spent running function
     auto end = high_resolution_clock::now();
     duration<double, micro> elapsed = end - start;
 
@@ -257,10 +261,12 @@ void City::assembleMapBetweenDates(map<string, Date*>& newMap, const string& sta
     int start = dateToInt(startDate);
     int end = dateToInt(endDate);
 
+    //catch invalid input
     if (start > end) {
         throw invalid_argument("Start date must be earlier than or equal to end date.");
     }
 
+    //average hourly data in this' map and add to new map
     for (auto& entry : dates) {
         int currentDate = dateToInt(entry.first);
         if (currentDate >= start && currentDate <= end) {
@@ -272,6 +278,7 @@ void City::assembleMapBetweenDates(map<string, Date*>& newMap, const string& sta
 
 void City::LoadAveragesVec(vector<Date*>& allAverages, map<string, Date*>& dates_)
 {
+    //push back each Date* in map to vector
     for (auto& entry : dates_) 
         allAverages.push_back(entry.second);
 
@@ -312,19 +319,31 @@ Date* City::GetResultStdSort(pair <string, string> sortBasedOn, vector<Date*>& a
 
 
 vector<Date*> City::mergeSort(vector<Date*> dates, const string& sortBasedOn) {
+    
+    //check for vector of size one or empty
     if (dates.size() <= 1) {
         return dates;
     }
+
+    //calulate midpoint
     int mid = dates.size() / 2;
+
+    //recursively call mergeSort
     vector<Date*> left = mergeSort(slice(dates, 0, mid - 1), sortBasedOn);
     vector<Date*> right = mergeSort(slice(dates, mid, dates.size() - 1), sortBasedOn);
+
+    //merge left and right half
     return merge(left, right, sortBasedOn);
 }
 
 vector<Date*> City::slice(const vector<Date*>& dates, int start, int end) {
+    
+    //check for invalif input
     if (start < 0 || end >= dates.size() || start > end) {
         throw invalid_argument("Invalid slice indices.");
     }
+
+    //slice vector using start and end indices
     return vector<Date*>(dates.begin() + start, dates.begin() + end + 1);
 }
 
@@ -332,6 +351,7 @@ vector<Date*> City::slice(const vector<Date*>& dates, int start, int end) {
 vector<Date*> City::merge(vector<Date*> left, vector<Date*> right, const string& sortBasedOn) {
     vector<Date*> res;
 
+    //sort according to sortBasedOn input
     while (!left.empty() && !right.empty()) {
         if (sortBasedOn == "air_temp") {
             if (left[0]->air_temp <= right[0]->air_temp) {
@@ -360,6 +380,7 @@ vector<Date*> City::merge(vector<Date*> left, vector<Date*> right, const string&
         }
     }
 
+    //append left and right items to res
     res.insert(res.end(), left.begin(), left.end());
     res.insert(res.end(), right.begin(), right.end());
 
