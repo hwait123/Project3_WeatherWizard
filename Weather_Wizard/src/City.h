@@ -57,8 +57,11 @@ public:
     Date* findLowestTemperature(map<string, vector<Date *>> &dates_);
 	Date* findMaxWindSpeed(map<string, vector<Date*>>& dates_);
 	Date* findMaxPrecipitation(map<string, vector<Date*>>& dates_);
+	
+	//behaviors
 	map<string, vector<Date*>> assembleMapBetweenDates(map<string, vector<Date*>>& dates, const string& startDate, const string& endDate);
 	int dateToInt(const string& date);
+	void LoadAveragesVec(vector<Date*>& allAverages, map<string, vector<Date*>>& dates_);
 
     //search
 

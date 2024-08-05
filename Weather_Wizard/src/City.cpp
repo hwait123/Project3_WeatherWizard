@@ -156,15 +156,8 @@ Date* City::findHighestTemperature(map<string, vector<Date*>>& dates_) {
     }
 
     vector<Date*> allAverages;
-    for (auto& entry : dates_) {
-        if (!entry.second.empty()) {
-            allAverages.push_back(entry.second[0]);
-        }
-    }
-
-    if (allAverages.empty()) {
-        throw runtime_error("No valid Date objects found.");
-    }
+    
+    LoadAveragesVec(allAverages, dates_);
 
     sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
         return a->air_temp > b->air_temp;
@@ -187,15 +180,8 @@ Date* City::findLowestTemperature(map<string, vector<Date*>>& dates_) {
     }
 
     vector<Date*> allAverages;
-    for (auto& entry : dates_) {
-        if (!entry.second.empty()) {
-            allAverages.push_back(entry.second[0]);
-        }
-    }
-
-    if (allAverages.empty()) {
-        throw runtime_error("No valid Date objects found.");
-    }
+    
+    LoadAveragesVec(allAverages, dates_);
 
     sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
         return a->air_temp < b->air_temp;
@@ -218,15 +204,8 @@ Date* City::findMaxWindSpeed(map<string, vector<Date*>>& dates_) {
     }
 
     vector<Date*> allAverages;
-    for (auto& entry : dates_) {
-        if (!entry.second.empty()) {
-            allAverages.push_back(entry.second[0]);
-        }
-    }
-
-    if (allAverages.empty()) {
-        throw runtime_error("No valid Date objects found.");
-    }
+    
+    LoadAveragesVec(allAverages, dates_);
 
     sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
         return a->wind_speed > b->wind_speed;
@@ -249,15 +228,8 @@ Date* City::findMaxPrecipitation(map<string, vector<Date*>>& dates_) {
     }
 
     vector<Date*> allAverages;
-    for (auto& entry : dates_) {
-        if (!entry.second.empty()) {
-            allAverages.push_back(entry.second[0]);
-        }
-    }
-
-    if (allAverages.empty()) {
-        throw runtime_error("No valid Date objects found.");
-    }
+    
+    LoadAveragesVec(allAverages, dates_);
 
     sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
         return a->precipitation > b->precipitation;
@@ -275,7 +247,6 @@ Date* City::findMaxPrecipitation(map<string, vector<Date*>>& dates_) {
 int City::dateToInt(const string& date) {
     return stoi(date.substr(0, 4)) * 10000 + stoi(date.substr(5, 2)) * 100 + stoi(date.substr(8, 2));
 }
-
 
 map<string, vector<Date*>> City::assembleMapBetweenDates(map<string, vector<Date*>>& dates, const string& startDate, const string& endDate) {
     int start = dateToInt(startDate);
@@ -296,6 +267,7 @@ map<string, vector<Date*>> City::assembleMapBetweenDates(map<string, vector<Date
     return newMap;
 }
 
+/********** Can't do insertion sort, so will have to change *********************/
 void insertionSort(vector<Date*>& dates) {
     for (size_t i = 1; i < dates.size(); ++i) {
         Date* key = dates[i];
@@ -305,5 +277,19 @@ void insertionSort(vector<Date*>& dates) {
             --j;
         }
         dates[j + 1] = key;
+    }
+}
+/********************************************************************************/
+
+void City::LoadAveragesVec(vector<Date*>& allAverages, map<string, vector<Date*>>& dates_)
+{
+    for (auto& entry : dates_) {
+        if (!entry.second.empty()) {
+            allAverages.push_back(entry.second[0]);
+        }
+    }
+
+    if (allAverages.empty()) {
+        throw runtime_error("No valid Date objects found.");
     }
 }
