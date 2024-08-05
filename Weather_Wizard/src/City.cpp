@@ -128,38 +128,11 @@ void City::Deserialize(istringstream& stream)
 
 void City::AddDate(string date, string time, string air_temp, string wind_speed, string precipitation)
 {
-	//check if date already exists
-	/*if (dates.find(date) == dates.end())
-	{
-		//create new date object
-		//and append to dates hashmap
-		Date* newDate = new Date(date, stof(air_temp), stof(wind_speed), stof(precipitation));
-		dates[date] = newDate;
-	}*/
 	Date* newDate = new Date(date + "-" +  time, stof(air_temp), stof(wind_speed), stof(precipitation));
 	dates[date].push_back(newDate);
 }
 
-//for testing
-/*void City::PrintMap()
-{
-	auto iter = dates.begin();
-
-	for (; iter != dates.end(); ++iter)
-		cout << iter->second->date << " " << iter->second->air_temp << " " << iter->second->wind_speed << " " << iter->second->precipitation << endl;
-}*/
-
-void City::PrintMap()
-{
-	auto iter = dates.begin();
-	for (; iter != dates.end(); ++iter)
-	{
-		for (int i = 0; i < iter->second.size(); i++)
-			cout << iter->second[i]->date << " " << iter->second[i]->air_temp << " " << iter->second[i]->wind_speed << " " << iter->second[i]->precipitation << endl;
-	}
-}
-
-Date City::averageData(const vector<Date*>& date_) {
+Date* City::averageData(const vector<Date*>& date_) {
 	float averageTemp = 0.0f;
 	float averageWindSpeed = 0.0f;
 	float averagePrecipitation = 0.0f;
@@ -171,7 +144,8 @@ Date City::averageData(const vector<Date*>& date_) {
         averagePrecipitation += data->precipitation;
     }
 	//Returns the first hour's name, but an averaged float for all other data
-	return Date(date_[0]->date, averageTemp / totalHours, averageWindSpeed / totalHours, averagePrecipitation / totalHours); 
+    Date* newPtr = new Date(date_[0]->date, averageTemp / totalHours, averageWindSpeed / totalHours, averagePrecipitation / totalHours);
+	return newPtr;
 }
 
 Date* City::findHighestTemperature(map<string, vector<Date*>>& dates_) {

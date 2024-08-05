@@ -50,9 +50,11 @@ public:
 	void ReadFromCSVFile(string filepath);
 	void Deserialize(istringstream& stream);
 	void AddDate(string date, string time, string air_temp, string wind_speed, string precipitation);
-	Date averageData(const vector<Date*>& date_);
-    Date *findHighestTemperature(map<string, vector<Date *>> &dates_);
-    Date *findLowestTemperature(map<string, vector<Date *>> &dates_);
+	
+	//calculations
+	Date* averageData(const vector<Date*>& date_);
+    Date* findHighestTemperature(map<string, vector<Date *>> &dates_);
+    Date* findLowestTemperature(map<string, vector<Date *>> &dates_);
 	Date* findMaxWindSpeed(map<string, vector<Date*>>& dates_);
 	Date* findMaxPrecipitation(map<string, vector<Date*>>& dates_);
 	map<string, vector<Date*>> assembleMapBetweenDates(map<string, vector<Date*>>& dates, const string& startDate, const string& endDate);
