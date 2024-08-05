@@ -158,12 +158,8 @@ Date* City::findHighestTemperature(map<string, vector<Date*>>& dates_) {
     vector<Date*> allAverages;
     
     LoadAveragesVec(allAverages, dates_);
-
-    sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
-        return a->air_temp > b->air_temp;
-    });
-
-    Date* highestTempDate = allAverages.front();
+    
+    Date* highestTempDate = GetResultStdSort("high", allAverages);
 
     auto end = high_resolution_clock::now();
     duration<double> elapsed = end - start;
@@ -183,11 +179,7 @@ Date* City::findLowestTemperature(map<string, vector<Date*>>& dates_) {
     
     LoadAveragesVec(allAverages, dates_);
 
-    sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
-        return a->air_temp < b->air_temp;
-    });
-
-    Date* lowestTempDate = allAverages.front();
+    Date* lowestTempDate = GetResultStdSort("low", allAverages);
 
     auto end = high_resolution_clock::now();
     duration<double> elapsed = end - start;
@@ -207,11 +199,7 @@ Date* City::findMaxWindSpeed(map<string, vector<Date*>>& dates_) {
     
     LoadAveragesVec(allAverages, dates_);
 
-    sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
-        return a->wind_speed > b->wind_speed;
-    });
-
-    Date* maxWindSpeedDate = allAverages.front();
+    Date* maxWindSpeedDate = GetResultStdSort("high", allAverages);
 
     auto end = high_resolution_clock::now();
     duration<double> elapsed = end - start;
@@ -231,11 +219,7 @@ Date* City::findMaxPrecipitation(map<string, vector<Date*>>& dates_) {
     
     LoadAveragesVec(allAverages, dates_);
 
-    sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
-        return a->precipitation > b->precipitation;
-    });
-
-    Date* maxPrecipitationDate = allAverages.front();
+    Date* maxPrecipitationDate = GetResultStdSort("high", allAverages);
 
     auto end = high_resolution_clock::now();
     duration<double> elapsed = end - start;
@@ -292,4 +276,19 @@ void City::LoadAveragesVec(vector<Date*>& allAverages, map<string, vector<Date*>
     if (allAverages.empty()) {
         throw runtime_error("No valid Date objects found.");
     }
+}
+
+Date* City::GetResultStdSort(string lowOrHigh, vector<Date*>& allAverages)
+{
+    //sort in decending order
+    sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
+        return a->precipitation > b->precipitation;
+    });
+
+    //if looking for high value, return front of vector
+    if (lowOrHigh == "high")
+        return allAverages.front();
+    //if looking for low value, return end of vector
+    if(lowOrHigh == "low")
+        return allAverages[allAverages.size() - 1];
 }

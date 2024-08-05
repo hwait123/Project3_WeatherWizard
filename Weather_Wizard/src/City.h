@@ -62,6 +62,8 @@ public:
 	map<string, vector<Date*>> assembleMapBetweenDates(map<string, vector<Date*>>& dates, const string& startDate, const string& endDate);
 	int dateToInt(const string& date);
 	void LoadAveragesVec(vector<Date*>& allAverages, map<string, vector<Date*>>& dates_);
+	Date* GetResultStdSort(string lowOrHigh, vector<Date*>& allAverages);
+
 
     //search
 
