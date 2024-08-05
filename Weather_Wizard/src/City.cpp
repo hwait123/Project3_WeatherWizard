@@ -174,15 +174,15 @@ Date City::averageData(const vector<Date*>& date_) {
 	return Date(date_[0]->date, averageTemp / totalHours, averageWindSpeed / totalHours, averagePrecipitation / totalHours); 
 }
 
-Date* City::findHighestTemperature(map<string, vector<Date*>>& dates) {
+Date* City::findHighestTemperature(map<string, vector<Date*>>& dates_) {
     auto start = high_resolution_clock::now();
 
-    if (dates.empty()) {
+    if (dates_.empty()) {
         throw invalid_argument("The map is empty.");
     }
 
     vector<Date*> allAverages;
-    for (auto& entry : dates) {
+    for (auto& entry : dates_) {
         if (!entry.second.empty()) {
             allAverages.push_back(entry.second[0]);
         }
@@ -205,15 +205,15 @@ Date* City::findHighestTemperature(map<string, vector<Date*>>& dates) {
     return highestTempDate;
 }
 
-Date* City::findLowestTemperature(map<string, vector<Date*>>& dates) {
+Date* City::findLowestTemperature(map<string, vector<Date*>>& dates_) {
     auto start = high_resolution_clock::now();
 
-    if (dates.empty()) {
+    if (dates_.empty()) {
         throw invalid_argument("The map is empty.");
     }
 
     vector<Date*> allAverages;
-    for (auto& entry : dates) {
+    for (auto& entry : dates_) {
         if (!entry.second.empty()) {
             allAverages.push_back(entry.second[0]);
         }
@@ -236,15 +236,15 @@ Date* City::findLowestTemperature(map<string, vector<Date*>>& dates) {
     return lowestTempDate;
 }
 
-Date* City::findMaxWindSpeed(map<string, vector<Date*>>& dates) {
+Date* City::findMaxWindSpeed(map<string, vector<Date*>>& dates_) {
     auto start = high_resolution_clock::now();
 
-    if (dates.empty()) {
+    if (dates_.empty()) {
         throw invalid_argument("The map is empty.");
     }
 
     vector<Date*> allAverages;
-    for (auto& entry : dates) {
+    for (auto& entry : dates_) {
         if (!entry.second.empty()) {
             allAverages.push_back(entry.second[0]);
         }
@@ -267,15 +267,15 @@ Date* City::findMaxWindSpeed(map<string, vector<Date*>>& dates) {
     return maxWindSpeedDate;
 }
 
-Date* City::findMaxPrecipitation(map<string, vector<Date*>>& dates) {
+Date* City::findMaxPrecipitation(map<string, vector<Date*>>& dates_) {
     auto start = high_resolution_clock::now();
 
-    if (dates.empty()) {
+    if (dates_.empty()) {
         throw invalid_argument("The map is empty.");
     }
 
     vector<Date*> allAverages;
-    for (auto& entry : dates) {
+    for (auto& entry : dates_) {
         if (!entry.second.empty()) {
             allAverages.push_back(entry.second[0]);
         }
@@ -296,4 +296,40 @@ Date* City::findMaxPrecipitation(map<string, vector<Date*>>& dates) {
     cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
     return maxPrecipitationDate;
+}
+
+int City::dateToInt(const string& date) {
+    return stoi(date.substr(0, 4)) * 10000 + stoi(date.substr(5, 2)) * 100 + stoi(date.substr(8, 2));
+}
+
+
+map<string, vector<Date*>> City::assembleMapBetweenDates(map<string, vector<Date*>>& dates, const string& startDate, const string& endDate) {
+    int start = dateToInt(startDate);
+    int end = dateToInt(endDate);
+
+    if (start > end) {
+        throw invalid_argument("Start date must be earlier than or equal to end date.");
+    }
+
+    map<string, vector<Date*>> newMap;
+    for (auto& entry : dates) {
+        int currentDate = dateToInt(entry.first);
+        if (currentDate >= start && currentDate <= end) {
+            newMap[entry.first] = entry.second;
+        }
+    }
+
+    return newMap;
+}
+
+void insertionSort(vector<Date*>& dates) {
+    for (size_t i = 1; i < dates.size(); ++i) {
+        Date* key = dates[i];
+        int j = i - 1;
+        while (j >= 0 && dates[j]->air_temp > key->air_temp) {
+            dates[j + 1] = dates[j];
+            --j;
+        }
+        dates[j + 1] = key;
+    }
 }
