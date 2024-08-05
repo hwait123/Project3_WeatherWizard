@@ -5,8 +5,10 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 struct Date
 {
@@ -53,10 +55,10 @@ public:
 	
 	//calculations
 	Date* averageData(const vector<Date*>& date_);
-    Date* findHighestTemperature(map<string, Date *> &dates_);
-    Date* findLowestTemperature(map<string, Date *> &dates_);
-	Date* findMaxWindSpeed(map<string, Date*>& dates_);
-	Date* findMaxPrecipitation(map<string, Date*>& dates_);
+    pair <Date*, duration<double>> findHighestTemperature(map<string, Date *> &dates_);
+    pair <Date*, duration<double>> findLowestTemperature(map<string, Date *> &dates_);
+	pair <Date*, duration<double>> findMaxWindSpeed(map<string, Date*>& dates_);
+	pair <Date*, duration<double>> findMaxPrecipitation(map<string, Date*>& dates_);
 	Date* GetResultStdSort(pair <string, string> sortBasedOn, vector<Date*>& allAverages);
 	
 	//behaviors

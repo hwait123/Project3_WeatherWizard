@@ -1,7 +1,6 @@
 #include <sstream>
 #include <iostream>
 #include <iterator>
-#include <chrono>
 #include <algorithm>
 #include "City.h"
 
@@ -136,7 +135,7 @@ Date* City::averageData(const vector<Date*>& date_) {
 	float sumTemp = 0.0f;
 	float sumWindSpeed = 0.0f;
 	float sumPrecipitation = 0.0f;
-	int totalHours = float(date_.size());
+	int totalHours = date_.size();
 	//For every element in our 'date' vector (every hour) add it's value to the average
 	for (const auto& data : date_) { 
         sumTemp += data->air_temp;
@@ -148,7 +147,7 @@ Date* City::averageData(const vector<Date*>& date_) {
 	return newPtr;
 }
 
-Date* City::findHighestTemperature(map<string, Date*>& dates_) {
+pair <Date*, duration<double>> City::findHighestTemperature(map<string, Date*>& dates_) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -163,12 +162,12 @@ Date* City::findHighestTemperature(map<string, Date*>& dates_) {
 
     auto end = high_resolution_clock::now();
     duration<double> elapsed = end - start;
-    cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
+    //cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
-    return highestTempDate;
+    return make_pair(highestTempDate, elapsed);
 }
 
-Date* City::findLowestTemperature(map<string, Date*>& dates_) {
+pair <Date*, duration<double>> City::findLowestTemperature(map<string, Date*>& dates_) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -183,12 +182,12 @@ Date* City::findLowestTemperature(map<string, Date*>& dates_) {
 
     auto end = high_resolution_clock::now();
     duration<double> elapsed = end - start;
-    cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
+    //cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
-    return lowestTempDate;
+    return make_pair(lowestTempDate, elapsed);
 }
 
-Date* City::findMaxWindSpeed(map<string, Date*>& dates_) {
+pair <Date*, duration<double>> City::findMaxWindSpeed(map<string, Date*>& dates_) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -203,12 +202,12 @@ Date* City::findMaxWindSpeed(map<string, Date*>& dates_) {
 
     auto end = high_resolution_clock::now();
     duration<double> elapsed = end - start;
-    cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
+    //out << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
-    return maxWindSpeedDate;
+    return make_pair(maxWindSpeedDate, elapsed);
 }
 
-Date* City::findMaxPrecipitation(map<string, Date*>& dates_) {
+pair <Date*, duration<double>> City::findMaxPrecipitation(map<string, Date*>& dates_) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -223,9 +222,9 @@ Date* City::findMaxPrecipitation(map<string, Date*>& dates_) {
 
     auto end = high_resolution_clock::now();
     duration<double> elapsed = end - start;
-    cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
+    //cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
-    return maxPrecipitationDate;
+    return make_pair(maxPrecipitationDate, elapsed);
 }
 
 int City::dateToInt(const string& date) {

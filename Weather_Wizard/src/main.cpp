@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <iomanip>
 
 #include "City.h"
 
@@ -96,6 +97,10 @@ int main()
     //
     ///////////////////////////////////////////////////////
 
+    //create new map object to store date range
+    map<string, Date*> newMap;
+    newCity.assembleMapBetweenDates(newMap, arrivalInput, departureInput);
+
     //create new map object and load with dates within given range
 
     cout << endl << endl << "Making magic happen..." << endl << endl;
@@ -103,17 +108,17 @@ int main()
     //results
     cout << endl << "For dates " << arrivalInput << " through " << departureInput << ":" << endl << endl;
     
-    cout << "(Calculated with [insert sort here], which took [time spent here])" << endl;
-    cout << "Highest temperature: " << endl;
+    cout << "(Calculated with std::sort)" << endl;
+    cout << "Highest temperature, calculated in " << newCity.findHighestTemperature(newMap).second.count() << " seconds: " << newCity.findHighestTemperature(newMap).first->air_temp << endl;
     //print highest temperature on what day
-    cout << "Lowest temperature: " << endl;
+    cout << "Lowest temperature, calculated in " << newCity.findLowestTemperature(newMap).second.count() << " seconds: " << newCity.findLowestTemperature(newMap).first->air_temp << endl;
     //print lowest temperature on what day
 
     //Keep to fastest and highest precipitation, because slowest and lowest will probably be 0
     //might change mind here
-    cout << "Fastest wind speed: " << endl;
+    cout << "Fastest wind speed, calculated in " << newCity.findMaxWindSpeed(newMap).second.count() << " seconds: " << newCity.findMaxWindSpeed(newMap).first->wind_speed << endl;
     //print results
-    cout << "Highest precipitation: " << endl;
+    cout << "Highest precipitation, calculated in " << newCity.findMaxPrecipitation(newMap).second.count() << " seconds: " << newCity.findMaxPrecipitation(newMap).first->precipitation << endl;
     //print results
 
     //*******************************************************************************
