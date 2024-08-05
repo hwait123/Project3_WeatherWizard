@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <iomanip>
 
 #include "City.h"
 
@@ -103,6 +104,12 @@ int main()
 
     //create new map object and load with dates within given range
 
+    //create new map object to store date range
+    map<string, Date*> newMap;
+    newCity.assembleMapBetweenDates(newMap, arrivalInput, departureInput);
+
+    //create new map object and load with dates within given range
+
     cout << endl << endl << "Making magic happen..." << endl << endl;
 
     //results
@@ -115,8 +122,9 @@ int main()
     //print lowest temperature on what day
 
     //Keep to fastest and highest precipitation, because slowest and lowest will probably be 0
+    //Keep to fastest and highest precipitation, because slowest and lowest will probably be 0
     //might change mind here
-    cout << "Fastest wind speed, calculated in " << newCity.findMaxWindSpeed(newMap).second.count() << " microseconds: " << newCity.findMaxWindSpeed(newMap).first->wind_speed << endl;
+    cout << "Fastest wind speed, calculated in " << newCity.findMaxWindSpeed(newMap).second.count() << " microseconds, calculated in " << newCity.findMaxWindSpeed(newMap).second.count() << " seconds: " << newCity.findMaxWindSpeed(newMap).first->wind_speed << newCity.findMaxWindSpeed(newMap).first->wind_speed << endl;
     //print results
     cout << "Highest precipitation, calculated in " << newCity.findMaxPrecipitation(newMap).second.count() << " microseconds: " << newCity.findMaxPrecipitation(newMap).first->precipitation << endl;
     //print results

@@ -6,8 +6,10 @@
 #include <fstream>
 #include <vector>
 #include <chrono>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 using namespace std::chrono;
 
 struct Date
@@ -67,6 +69,7 @@ public:
 	//behaviors
 	void assembleMapBetweenDates(map<string, Date*>& newMap, const string& startDate, const string& endDate);
 	int dateToInt(const string& date);
+	void LoadAveragesVec(vector<Date*>& allAverages, map<string, Date*>& dates_);
 	void LoadAveragesVec(vector<Date*>& allAverages, map<string, Date*>& dates_);
 
     //search

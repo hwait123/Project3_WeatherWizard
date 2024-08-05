@@ -135,14 +135,23 @@ Date* City::averageData(const vector<Date*>& date_) {
 	float sumTemp = 0.0f;
 	float sumWindSpeed = 0.0f;
 	float sumPrecipitation = 0.0f;
+Date* City::averageData(const vector<Date*>& date_) {
+	float sumTemp = 0.0f;
+	float sumWindSpeed = 0.0f;
+	float sumPrecipitation = 0.0f;
 	int totalHours = date_.size();
 	//For every element in our 'date' vector (every hour) add it's value to the average
 	for (const auto& data : date_) { 
         sumTemp += data->air_temp;
         sumWindSpeed += data->wind_speed;
         sumPrecipitation += data->precipitation;
+        sumTemp += data->air_temp;
+        sumWindSpeed += data->wind_speed;
+        sumPrecipitation += data->precipitation;
     }
 	//Returns the first hour's name, but an averaged float for all other data
+    Date* newPtr = new Date(date_[0]->date, sumTemp / totalHours, sumWindSpeed / totalHours, sumPrecipitation / totalHours);
+	return newPtr;
     Date* newPtr = new Date(date_[0]->date, sumTemp / totalHours, sumWindSpeed / totalHours, sumPrecipitation / totalHours);
 	return newPtr;
 }
@@ -159,11 +168,16 @@ pair <Date*, duration<double, micro>> City::findHighestTemperature(map<string, D
     LoadAveragesVec(allAverages, dates_);
 
     Date* highestTempDate = GetResultStdSort(make_pair("air_temp", "high"), allAverages);
+    
+    LoadAveragesVec(allAverages, dates_);
+
+    Date* highestTempDate = GetResultStdSort(make_pair("air_temp", "high"), allAverages);
 
     auto end = high_resolution_clock::now();
     duration<double, micro> elapsed = end - start;
     //cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
+    return make_pair(highestTempDate, elapsed);
     return make_pair(highestTempDate, elapsed);
 }
 
@@ -179,11 +193,16 @@ pair <Date*, duration<double, micro>> City::findLowestTemperature(map<string, Da
     LoadAveragesVec(allAverages, dates_);
 
     Date* lowestTempDate = GetResultStdSort(make_pair("air_temp", "low"), allAverages);
+    
+    LoadAveragesVec(allAverages, dates_);
+
+    Date* lowestTempDate = GetResultStdSort(make_pair("air_temp", "low"), allAverages);
 
     auto end = high_resolution_clock::now();
     duration<double, micro> elapsed = end - start;
     //cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
+    return make_pair(lowestTempDate, elapsed);
     return make_pair(lowestTempDate, elapsed);
 }
 
@@ -199,11 +218,16 @@ pair <Date*, duration<double, micro>> City::findMaxWindSpeed(map<string, Date*>&
     LoadAveragesVec(allAverages, dates_);
 
     Date* maxWindSpeedDate = GetResultStdSort(make_pair("wind_speed", "high"), allAverages);
+    
+    LoadAveragesVec(allAverages, dates_);
+
+    Date* maxWindSpeedDate = GetResultStdSort(make_pair("wind_speed", "high"), allAverages);
 
     auto end = high_resolution_clock::now();
     duration<double, micro> elapsed = end - start;
     //out << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
+    return make_pair(maxWindSpeedDate, elapsed);
     return make_pair(maxWindSpeedDate, elapsed);
 }
 
@@ -219,11 +243,16 @@ pair <Date*, duration<double, micro>> City::findMaxPrecipitation(map<string, Dat
     LoadAveragesVec(allAverages, dates_);
 
     Date* maxPrecipitationDate = GetResultStdSort(make_pair("precipitation", "high"), allAverages);
+    
+    LoadAveragesVec(allAverages, dates_);
+
+    Date* maxPrecipitationDate = GetResultStdSort(make_pair("precipitation", "high"), allAverages);
 
     auto end = high_resolution_clock::now();
     duration<double, micro> elapsed = end - start;
     //cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
+    return make_pair(maxPrecipitationDate, elapsed);
     return make_pair(maxPrecipitationDate, elapsed);
 }
 
@@ -231,6 +260,7 @@ int City::dateToInt(const string& date) {
     return stoi(date.substr(0, 4)) * 10000 + stoi(date.substr(5, 2)) * 100 + stoi(date.substr(8, 2));
 }
 
+/*map<string, vector<Date*>> City::assembleMapBetweenDates(map<string, vector<Date*>>& dates, const string& startDate, const string& endDate) {
 /*map<string, vector<Date*>> City::assembleMapBetweenDates(map<string, vector<Date*>>& dates, const string& startDate, const string& endDate) {
     int start = dateToInt(startDate);
     int end = dateToInt(endDate);
@@ -247,6 +277,30 @@ int City::dateToInt(const string& date) {
         }
     }
 
+    return newMap; 
+    
+}*/
+
+//adjusted function to accept an empty map as input and load map with values within range,
+//because main.cpp will not have access to the object's map
+void City::assembleMapBetweenDates(map<string, Date*>& newMap, const string& startDate, const string& endDate) {
+    int start = dateToInt(startDate);
+    int end = dateToInt(endDate);
+
+    if (start > end) {
+        throw invalid_argument("Start date must be earlier than or equal to end date.");
+    }
+
+    for (auto& entry : dates) {
+        int currentDate = dateToInt(entry.first);
+        if (currentDate >= start && currentDate <= end) {
+            newMap[entry.first] = averageData(entry.second);
+        }
+    }
+
+}
+
+/********** Can't do insertion sort, so will have to change *********************/
     return newMap; 
     
 }*/
