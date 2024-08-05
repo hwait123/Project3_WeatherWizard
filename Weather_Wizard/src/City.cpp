@@ -1,7 +1,6 @@
 #include <sstream>
 #include <iostream>
 #include <iterator>
-#include <chrono>
 #include <algorithm>
 #include "City.h"
 
@@ -128,53 +127,27 @@ void City::Deserialize(istringstream& stream)
 
 void City::AddDate(string date, string time, string air_temp, string wind_speed, string precipitation)
 {
-	//check if date already exists
-	/*if (dates.find(date) == dates.end())
-	{
-		//create new date object
-		//and append to dates hashmap
-		Date* newDate = new Date(date, stof(air_temp), stof(wind_speed), stof(precipitation));
-		dates[date] = newDate;
-	}*/
 	Date* newDate = new Date(date + "-" +  time, stof(air_temp), stof(wind_speed), stof(precipitation));
 	dates[date].push_back(newDate);
 }
 
-//for testing
-/*void City::PrintMap()
-{
-	auto iter = dates.begin();
-
-	for (; iter != dates.end(); ++iter)
-		cout << iter->second->date << " " << iter->second->air_temp << " " << iter->second->wind_speed << " " << iter->second->precipitation << endl;
-}*/
-
-void City::PrintMap()
-{
-	auto iter = dates.begin();
-	for (; iter != dates.end(); ++iter)
-	{
-		for (int i = 0; i < iter->second.size(); i++)
-			cout << iter->second[i]->date << " " << iter->second[i]->air_temp << " " << iter->second[i]->wind_speed << " " << iter->second[i]->precipitation << endl;
-	}
-}
-
-Date City::averageData(const vector<Date*>& date_) {
-	float averageTemp = 0.0f;
-	float averageWindSpeed = 0.0f;
-	float averagePrecipitation = 0.0f;
+Date* City::averageData(const vector<Date*>& date_) {
+	float sumTemp = 0.0f;
+	float sumWindSpeed = 0.0f;
+	float sumPrecipitation = 0.0f;
 	int totalHours = date_.size();
 	//For every element in our 'date' vector (every hour) add it's value to the average
 	for (const auto& data : date_) { 
-        averageTemp += data->air_temp;
-        averageWindSpeed += data->wind_speed;
-        averagePrecipitation += data->precipitation;
+        sumTemp += data->air_temp;
+        sumWindSpeed += data->wind_speed;
+        sumPrecipitation += data->precipitation;
     }
 	//Returns the first hour's name, but an averaged float for all other data
-	return Date(date_[0]->date, averageTemp / totalHours, averageWindSpeed / totalHours, averagePrecipitation / totalHours); 
+    Date* newPtr = new Date(date_[0]->date, sumTemp / totalHours, sumWindSpeed / totalHours, sumPrecipitation / totalHours);
+	return newPtr;
 }
 
-Date* City::findHighestTemperature(map<string, vector<Date*>>& dates_) {
+pair <Date*, duration<double, micro>> City::findHighestTemperature(map<string, Date*>& dates_) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -182,30 +155,19 @@ Date* City::findHighestTemperature(map<string, vector<Date*>>& dates_) {
     }
 
     vector<Date*> allAverages;
-    for (auto& entry : dates_) {
-        if (!entry.second.empty()) {
-            allAverages.push_back(entry.second[0]);
-        }
-    }
+    
+    LoadAveragesVec(allAverages, dates_);
 
-    if (allAverages.empty()) {
-        throw runtime_error("No valid Date objects found.");
-    }
-
-    sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
-        return a->air_temp > b->air_temp;
-    });
-
-    Date* highestTempDate = allAverages.front();
+    Date* highestTempDate = GetResultStdSort(make_pair("air_temp", "high"), allAverages);
 
     auto end = high_resolution_clock::now();
-    duration<double> elapsed = end - start;
-    cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
+    duration<double, micro> elapsed = end - start;
+    //cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
-    return highestTempDate;
+    return make_pair(highestTempDate, elapsed);
 }
 
-Date* City::findLowestTemperature(map<string, vector<Date*>>& dates_) {
+pair <Date*, duration<double, micro>> City::findLowestTemperature(map<string, Date*>& dates_) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -213,30 +175,19 @@ Date* City::findLowestTemperature(map<string, vector<Date*>>& dates_) {
     }
 
     vector<Date*> allAverages;
-    for (auto& entry : dates_) {
-        if (!entry.second.empty()) {
-            allAverages.push_back(entry.second[0]);
-        }
-    }
+    
+    LoadAveragesVec(allAverages, dates_);
 
-    if (allAverages.empty()) {
-        throw runtime_error("No valid Date objects found.");
-    }
-
-    sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
-        return a->air_temp < b->air_temp;
-    });
-
-    Date* lowestTempDate = allAverages.front();
+    Date* lowestTempDate = GetResultStdSort(make_pair("air_temp", "low"), allAverages);
 
     auto end = high_resolution_clock::now();
-    duration<double> elapsed = end - start;
-    cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
+    duration<double, micro> elapsed = end - start;
+    //cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
-    return lowestTempDate;
+    return make_pair(lowestTempDate, elapsed);
 }
 
-Date* City::findMaxWindSpeed(map<string, vector<Date*>>& dates_) {
+pair <Date*, duration<double, micro>> City::findMaxWindSpeed(map<string, Date*>& dates_) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -244,30 +195,19 @@ Date* City::findMaxWindSpeed(map<string, vector<Date*>>& dates_) {
     }
 
     vector<Date*> allAverages;
-    for (auto& entry : dates_) {
-        if (!entry.second.empty()) {
-            allAverages.push_back(entry.second[0]);
-        }
-    }
+    
+    LoadAveragesVec(allAverages, dates_);
 
-    if (allAverages.empty()) {
-        throw runtime_error("No valid Date objects found.");
-    }
-
-    sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
-        return a->wind_speed > b->wind_speed;
-    });
-
-    Date* maxWindSpeedDate = allAverages.front();
+    Date* maxWindSpeedDate = GetResultStdSort(make_pair("wind_speed", "high"), allAverages);
 
     auto end = high_resolution_clock::now();
-    duration<double> elapsed = end - start;
-    cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
+    duration<double, micro> elapsed = end - start;
+    //out << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
-    return maxWindSpeedDate;
+    return make_pair(maxWindSpeedDate, elapsed);
 }
 
-Date* City::findMaxPrecipitation(map<string, vector<Date*>>& dates_) {
+pair <Date*, duration<double, micro>> City::findMaxPrecipitation(map<string, Date*>& dates_) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -275,35 +215,23 @@ Date* City::findMaxPrecipitation(map<string, vector<Date*>>& dates_) {
     }
 
     vector<Date*> allAverages;
-    for (auto& entry : dates_) {
-        if (!entry.second.empty()) {
-            allAverages.push_back(entry.second[0]);
-        }
-    }
+    
+    LoadAveragesVec(allAverages, dates_);
 
-    if (allAverages.empty()) {
-        throw runtime_error("No valid Date objects found.");
-    }
-
-    sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
-        return a->precipitation > b->precipitation;
-    });
-
-    Date* maxPrecipitationDate = allAverages.front();
+    Date* maxPrecipitationDate = GetResultStdSort(make_pair("precipitation", "high"), allAverages);
 
     auto end = high_resolution_clock::now();
-    duration<double> elapsed = end - start;
-    cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
+    duration<double, micro> elapsed = end - start;
+    //cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
-    return maxPrecipitationDate;
+    return make_pair(maxPrecipitationDate, elapsed);
 }
 
 int City::dateToInt(const string& date) {
     return stoi(date.substr(0, 4)) * 10000 + stoi(date.substr(5, 2)) * 100 + stoi(date.substr(8, 2));
 }
 
-
-map<string, vector<Date*>> City::assembleMapBetweenDates(map<string, vector<Date*>>& dates, const string& startDate, const string& endDate) {
+/*map<string, vector<Date*>> City::assembleMapBetweenDates(map<string, vector<Date*>>& dates, const string& startDate, const string& endDate) {
     int start = dateToInt(startDate);
     int end = dateToInt(endDate);
 
@@ -319,9 +247,30 @@ map<string, vector<Date*>> City::assembleMapBetweenDates(map<string, vector<Date
         }
     }
 
-    return newMap;
+    return newMap; 
+    
+}*/
+
+//adjusted function to accept an empty map as input and load map with values within range,
+//because main.cpp will not have access to the object's map
+void City::assembleMapBetweenDates(map<string, Date*>& newMap, const string& startDate, const string& endDate) {
+    int start = dateToInt(startDate);
+    int end = dateToInt(endDate);
+
+    if (start > end) {
+        throw invalid_argument("Start date must be earlier than or equal to end date.");
+    }
+
+    for (auto& entry : dates) {
+        int currentDate = dateToInt(entry.first);
+        if (currentDate >= start && currentDate <= end) {
+            newMap[entry.first] = averageData(entry.second);
+        }
+    }
+
 }
 
+/********** Can't do insertion sort, so will have to change *********************/
 void insertionSort(vector<Date*>& dates) {
     for (size_t i = 1; i < dates.size(); ++i) {
         Date* key = dates[i];
@@ -332,4 +281,94 @@ void insertionSort(vector<Date*>& dates) {
         }
         dates[j + 1] = key;
     }
+}
+/********************************************************************************/
+
+void City::LoadAveragesVec(vector<Date*>& allAverages, map<string, Date*>& dates_)
+{
+    for (auto& entry : dates_) 
+        allAverages.push_back(entry.second);
+
+    if (allAverages.empty()) {
+        throw runtime_error("No valid Date objects found.");
+    }
+}
+
+Date* City::GetResultStdSort(pair <string, string> sortBasedOn, vector<Date*>& allAverages)
+{
+    //sort in decending order
+    if (sortBasedOn.first == "precipitation")
+    {
+        sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
+            return a->precipitation > b->precipitation;
+        });
+    }
+    else if (sortBasedOn.first == "air_temp")
+    {
+        sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
+            return a->air_temp > b->air_temp;
+        });
+    }
+    else if (sortBasedOn.first == "wind_speed")
+    {
+        sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
+            return a->wind_speed > b->wind_speed;
+        });
+    }
+
+    //if looking for high value, return front of vector
+    if (sortBasedOn.second == "high")
+        return allAverages.front();
+    //if looking for low value, return end of vector
+    if (sortBasedOn.second == "low")
+        return allAverages[allAverages.size() - 1];
+}
+
+
+vector<Date*> City::mergeSort(vector<Date*> dates, string sortBasedOn) {
+    
+    //if vector holds only one date, no need to sort
+    if (dates.size() <= 1)
+        return dates;
+    int mid = dates.size() / 2;
+    vector<Date*> left = mergeSort(slice(dates, 0, (mid - 1)), sortBasedOn);
+    vector<Date*> right = mergeSort(slice(dates, mid, (dates.size() - 1)), sortBasedOn);
+    return merge(left, right, sortBasedOn);
+
+}
+
+vector<Date*> City::slice(vector<Date*> dates, int start, int end) {
+
+    vector<Date*> slicedVec;
+
+    for(int i = start; i <= end; i++)
+        slicedVec.push_back(dates[i]);
+
+    return slicedVec;
+}
+
+vector<Date*> City::merge(vector<Date*> left, vector<Date*> right, string sortBasedOn){
+    
+    vector<Date*> res;
+    
+    while (left.size() != 0 && right.size() != 0){
+        if (sortBasedOn == "air_temp"){
+            if (left[0]->air_temp <= right[0]->air_temp){
+                res.push_back(left[0]);
+                left = slice(left, 1, left.size() - 1);
+            }
+            else { 
+                res.push_back(right[0]);
+                right = slice(right, 1, right.size() - 1);
+            }
+            
+        }
+    }
+
+    for (int i = 0; i < left.size(); i++)
+        res.push_back(left[i]);
+    for (int j = 0; j < right.size(); j++)
+        res.push_back(right[j]);
+
+    return res;
 }

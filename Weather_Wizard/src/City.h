@@ -5,8 +5,10 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 struct Date
 {
@@ -50,13 +52,22 @@ public:
 	void ReadFromCSVFile(string filepath);
 	void Deserialize(istringstream& stream);
 	void AddDate(string date, string time, string air_temp, string wind_speed, string precipitation);
-	Date averageData(const vector<Date*>& date_);
-    Date *findHighestTemperature(map<string, vector<Date *>> &dates_);
-    Date *findLowestTemperature(map<string, vector<Date *>> &dates_);
-	Date* findMaxWindSpeed(map<string, vector<Date*>>& dates_);
-	Date* findMaxPrecipitation(map<string, vector<Date*>>& dates_);
-	map<string, vector<Date*>> assembleMapBetweenDates(map<string, vector<Date*>>& dates, const string& startDate, const string& endDate);
+	
+	//calculations
+	Date* averageData(const vector<Date*>& date_);
+    pair <Date*, duration<double, micro>> findHighestTemperature(map<string, Date *> &dates_);
+    pair <Date*, duration<double, micro>> findLowestTemperature(map<string, Date *> &dates_);
+	pair <Date*, duration<double, micro>> findMaxWindSpeed(map<string, Date*>& dates_);
+	pair <Date*, duration<double, micro>> findMaxPrecipitation(map<string, Date*>& dates_);
+	Date* GetResultStdSort(pair <string, string> sortBasedOn, vector<Date*>& allAverages);
+	vector<Date*> slice(vector<Date*> dates, int start, int end);
+	vector<Date*> merge(vector<Date*> left, vector<Date*> right, string sortBasedOn);
+	vector<Date*> mergeSort(vector<Date*> dates, string sortBasedOn);
+	
+	//behaviors
+	void assembleMapBetweenDates(map<string, Date*>& newMap, const string& startDate, const string& endDate);
 	int dateToInt(const string& date);
+	void LoadAveragesVec(vector<Date*>& allAverages, map<string, Date*>& dates_);
 
     //search
 
