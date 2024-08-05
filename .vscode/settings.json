@@ -5,6 +5,7 @@
         "vector": "cpp",
         "utility": "cpp",
         "ratio": "cpp",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "chrono": "cpp"
     }
 }

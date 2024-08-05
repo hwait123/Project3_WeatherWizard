@@ -108,31 +108,31 @@ int main()
     cout << endl << "For dates " << arrivalInput << " through " << departureInput << ":" << endl << endl;
     
     cout << "(Calculated with std::sort)" << endl;
-    cout << "Highest temperature, calculated in " << newCity.findHighestTemperature(newMap).second.count() << " microseconds: " << newCity.findHighestTemperature(newMap).first->air_temp << endl;
+    cout << "Highest temperature, calculated in " << newCity.findHighestTemperature(newMap, "std_sort").second.count() << " microseconds: " << newCity.findHighestTemperature(newMap, "std_sort").first->air_temp << endl;
     //print highest temperature on what day
-    cout << "Lowest temperature, calculated in " << newCity.findLowestTemperature(newMap).second.count() << " microseconds: " << newCity.findLowestTemperature(newMap).first->air_temp << endl;
+    cout << "Lowest temperature, calculated in " << newCity.findLowestTemperature(newMap, "std_sort").second.count() << " microseconds: " << newCity.findLowestTemperature(newMap, "std_sort").first->air_temp << endl;
     //print lowest temperature on what day
 
     //Keep to fastest and highest precipitation, because slowest and lowest will probably be 0
     //might change mind here
-    cout << "Fastest wind speed, calculated in " << newCity.findMaxWindSpeed(newMap).second.count() << " microseconds: " << newCity.findMaxWindSpeed(newMap).first->wind_speed << endl;
+    cout << "Fastest wind speed, calculated in " << newCity.findMaxWindSpeed(newMap, "std_sort").second.count() << " microseconds: " << newCity.findMaxWindSpeed(newMap, "std_sort").first->wind_speed << endl;
     //print results
-    cout << "Highest precipitation, calculated in " << newCity.findMaxPrecipitation(newMap).second.count() << " microseconds: " << newCity.findMaxPrecipitation(newMap).first->precipitation << endl;
+    cout << "Highest precipitation, calculated in " << newCity.findMaxPrecipitation(newMap, "std_sort").second.count() << " microseconds: " << newCity.findMaxPrecipitation(newMap, "std_sort").first->precipitation << endl;
     //print results
 
     //*******************************************************************************
     //repeated with second sort
-    cout << endl << "(Calculated with [insert sort here], which took [time spent here])" << endl;
-    cout << "Highest temperature: " << endl;
+    cout << endl << "(Calculated with merge sort)" << endl;
+    cout << "Highest temperature, calculated in " << newCity.findHighestTemperature(newMap, "merge_sort").second.count() << " microseconds: " << newCity.findHighestTemperature(newMap, "merge_sort").first->air_temp << endl;
     //print highest temperature on what day
-    cout << "Lowest temperature: " << endl;
+    cout << "Lowest temperature, calculated in " << newCity.findLowestTemperature(newMap, "merge_sort").second.count() << " microseconds: " << newCity.findLowestTemperature(newMap, "merge_sort").first->air_temp << endl;
     //print lowest temperature on what day
 
-    //Keep to fasted and highest precipitation, because slowest and lowest will probably be 0
+    //Keep to fastest and highest precipitation, because slowest and lowest will probably be 0
     //might change mind here
-    cout << "Fastest wind speed: " << endl;
+    cout << "Fastest wind speed, calculated in " << newCity.findMaxWindSpeed(newMap, "merge_sort").second.count() << " microseconds: " << newCity.findMaxWindSpeed(newMap, "merge_sort").first->wind_speed << endl;
     //print results
-    cout << "Highest precipitation: " << endl;
+    cout << "Highest precipitation, calculated in " << newCity.findMaxPrecipitation(newMap, "merge_sort").second.count() << " microseconds: " << newCity.findMaxPrecipitation(newMap, "merge_sort").first->precipitation << endl;
     //print results
 
     return 0;

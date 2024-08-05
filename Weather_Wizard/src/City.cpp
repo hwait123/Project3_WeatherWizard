@@ -147,7 +147,7 @@ Date* City::averageData(const vector<Date*>& date_) {
 	return newPtr;
 }
 
-pair <Date*, duration<double, micro>> City::findHighestTemperature(map<string, Date*>& dates_) {
+pair <Date*, duration<double, micro>> City::findHighestTemperature(map<string, Date*>& dates_, const string& sortMethod) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -155,19 +155,24 @@ pair <Date*, duration<double, micro>> City::findHighestTemperature(map<string, D
     }
 
     vector<Date*> allAverages;
-    
     LoadAveragesVec(allAverages, dates_);
 
-    Date* highestTempDate = GetResultStdSort(make_pair("air_temp", "high"), allAverages);
+    Date* highestTempDate = nullptr;
+
+    if (sortMethod == "std_sort") {
+        highestTempDate = GetResultStdSort(make_pair("air_temp", "high"), allAverages);
+    } else if (sortMethod == "merge_sort") {
+        vector<Date*> sortedDates = mergeSort(allAverages, "air_temp");
+        highestTempDate = sortedDates.back(); // Last element has the highest temperature
+    }
 
     auto end = high_resolution_clock::now();
     duration<double, micro> elapsed = end - start;
-    //cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
     return make_pair(highestTempDate, elapsed);
 }
 
-pair <Date*, duration<double, micro>> City::findLowestTemperature(map<string, Date*>& dates_) {
+pair <Date*, duration<double, micro>> City::findLowestTemperature(map<string, Date*>& dates_, const string& sortMethod) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -175,19 +180,24 @@ pair <Date*, duration<double, micro>> City::findLowestTemperature(map<string, Da
     }
 
     vector<Date*> allAverages;
-    
     LoadAveragesVec(allAverages, dates_);
 
-    Date* lowestTempDate = GetResultStdSort(make_pair("air_temp", "low"), allAverages);
-    
+    Date* lowestTempDate = nullptr;
+
+    if (sortMethod == "std_sort") {
+        lowestTempDate = GetResultStdSort(make_pair("air_temp", "low"), allAverages);
+    } else if (sortMethod == "merge_sort") {
+        vector<Date*> sortedDates = mergeSort(allAverages, "air_temp");
+        lowestTempDate = sortedDates.front(); // First element has the lowest temperature
+    }
+
     auto end = high_resolution_clock::now();
     duration<double, micro> elapsed = end - start;
-    //cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
     return make_pair(lowestTempDate, elapsed);
 }
 
-pair <Date*, duration<double, micro>> City::findMaxWindSpeed(map<string, Date*>& dates_) {
+pair <Date*, duration<double, micro>> City::findMaxWindSpeed(map<string, Date*>& dates_, const string& sortMethod) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -195,20 +205,24 @@ pair <Date*, duration<double, micro>> City::findMaxWindSpeed(map<string, Date*>&
     }
 
     vector<Date*> allAverages;
-    
     LoadAveragesVec(allAverages, dates_);
 
-    Date* maxWindSpeedDate = GetResultStdSort(make_pair("wind_speed", "high"), allAverages);
-    
+    Date* maxWindSpeedDate = nullptr;
+
+    if (sortMethod == "std_sort") {
+        maxWindSpeedDate = GetResultStdSort(make_pair("wind_speed", "high"), allAverages);
+    } else if (sortMethod == "merge_sort") {
+        vector<Date*> sortedDates = mergeSort(allAverages, "wind_speed");
+        maxWindSpeedDate = sortedDates.back(); // Last element has the maximum wind speed
+    }
 
     auto end = high_resolution_clock::now();
     duration<double, micro> elapsed = end - start;
-    //out << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
     return make_pair(maxWindSpeedDate, elapsed);
 }
 
-pair <Date*, duration<double, micro>> City::findMaxPrecipitation(map<string, Date*>& dates_) {
+pair <Date*, duration<double, micro>> City::findMaxPrecipitation(map<string, Date*>& dates_, const string& sortMethod) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -216,14 +230,19 @@ pair <Date*, duration<double, micro>> City::findMaxPrecipitation(map<string, Dat
     }
 
     vector<Date*> allAverages;
-    
     LoadAveragesVec(allAverages, dates_);
 
-    Date* maxPrecipitationDate = GetResultStdSort(make_pair("precipitation", "high"), allAverages);
+    Date* maxPrecipitationDate = nullptr;
+
+    if (sortMethod == "std_sort") {
+        maxPrecipitationDate = GetResultStdSort(make_pair("precipitation", "high"), allAverages);
+    } else if (sortMethod == "merge_sort") {
+        vector<Date*> sortedDates = mergeSort(allAverages, "precipitation");
+        maxPrecipitationDate = sortedDates.back(); // Last element has the maximum precipitation
+    }
 
     auto end = high_resolution_clock::now();
     duration<double, micro> elapsed = end - start;
-    //cout << "Time taken to run the function: " << elapsed.count() << " seconds" << endl;
 
     return make_pair(maxPrecipitationDate, elapsed);
 }
@@ -231,27 +250,6 @@ pair <Date*, duration<double, micro>> City::findMaxPrecipitation(map<string, Dat
 int City::dateToInt(const string& date) {
     return stoi(date.substr(0, 4)) * 10000 + stoi(date.substr(5, 2)) * 100 + stoi(date.substr(8, 2));
 }
-
-/*map<string, vector<Date*>> City::assembleMapBetweenDates(map<string, vector<Date*>>& dates, const string& startDate, const string& endDate) {
-/*map<string, vector<Date*>> City::assembleMapBetweenDates(map<string, vector<Date*>>& dates, const string& startDate, const string& endDate) {
-    int start = dateToInt(startDate);
-    int end = dateToInt(endDate);
-
-    if (start > end) {
-        throw invalid_argument("Start date must be earlier than or equal to end date.");
-    }
-
-    map<string, vector<Date*>> newMap;
-    for (auto& entry : dates) {
-        int currentDate = dateToInt(entry.first);
-        if (currentDate >= start && currentDate <= end) {
-            newMap[entry.first] = entry.second;
-        }
-    }
-
-    return newMap; 
-    
-}*/
 
 //adjusted function to accept an empty map as input and load map with values within range,
 //because main.cpp will not have access to the object's map
@@ -271,20 +269,6 @@ void City::assembleMapBetweenDates(map<string, Date*>& newMap, const string& sta
     }
 
 }
-
-/********** Can't do insertion sort, so will have to change *********************/
-void insertionSort(vector<Date*>& dates) {
-    for (size_t i = 1; i < dates.size(); ++i) {
-        Date* key = dates[i];
-        int j = i - 1;
-        while (j >= 0 && dates[j]->air_temp > key->air_temp) {
-            dates[j + 1] = dates[j];
-            --j;
-        }
-        dates[j + 1] = key;
-    }
-}
-/********************************************************************************/
 
 void City::LoadAveragesVec(vector<Date*>& allAverages, map<string, Date*>& dates_)
 {
@@ -327,50 +311,57 @@ Date* City::GetResultStdSort(pair <string, string> sortBasedOn, vector<Date*>& a
 }
 
 
-vector<Date*> City::mergeSort(vector<Date*> dates, string sortBasedOn) {
-    
-    //if vector holds only one date, no need to sort
-    if (dates.size() <= 1)
+vector<Date*> City::mergeSort(vector<Date*> dates, const string& sortBasedOn) {
+    if (dates.size() <= 1) {
         return dates;
+    }
     int mid = dates.size() / 2;
-    vector<Date*> left = mergeSort(slice(dates, 0, (mid - 1)), sortBasedOn);
-    vector<Date*> right = mergeSort(slice(dates, mid, (dates.size() - 1)), sortBasedOn);
+    vector<Date*> left = mergeSort(slice(dates, 0, mid - 1), sortBasedOn);
+    vector<Date*> right = mergeSort(slice(dates, mid, dates.size() - 1), sortBasedOn);
     return merge(left, right, sortBasedOn);
-
 }
 
-vector<Date*> City::slice(vector<Date*> dates, int start, int end) {
-
-    vector<Date*> slicedVec;
-
-    for(int i = start; i <= end; i++)
-        slicedVec.push_back(dates[i]);
-
-    return slicedVec;
+vector<Date*> City::slice(const vector<Date*>& dates, int start, int end) {
+    if (start < 0 || end >= dates.size() || start > end) {
+        throw invalid_argument("Invalid slice indices.");
+    }
+    return vector<Date*>(dates.begin() + start, dates.begin() + end + 1);
 }
 
-vector<Date*> City::merge(vector<Date*> left, vector<Date*> right, string sortBasedOn){
-    
+
+vector<Date*> City::merge(vector<Date*> left, vector<Date*> right, const string& sortBasedOn) {
     vector<Date*> res;
-    
-    while (left.size() != 0 && right.size() != 0){
-        if (sortBasedOn == "air_temp"){
-            if (left[0]->air_temp <= right[0]->air_temp){
+
+    while (!left.empty() && !right.empty()) {
+        if (sortBasedOn == "air_temp") {
+            if (left[0]->air_temp <= right[0]->air_temp) {
                 res.push_back(left[0]);
-                left = slice(left, 1, left.size() - 1);
-            }
-            else { 
+                left.erase(left.begin());
+            } else {
                 res.push_back(right[0]);
-                right = slice(right, 1, right.size() - 1);
+                right.erase(right.begin());
             }
-            
+        } else if (sortBasedOn == "wind_speed") {
+            if (left[0]->wind_speed <= right[0]->wind_speed) {
+                res.push_back(left[0]);
+                left.erase(left.begin());
+            } else {
+                res.push_back(right[0]);
+                right.erase(right.begin());
+            }
+        } else if (sortBasedOn == "precipitation") {
+            if (left[0]->precipitation <= right[0]->precipitation) {
+                res.push_back(left[0]);
+                left.erase(left.begin());
+            } else {
+                res.push_back(right[0]);
+                right.erase(right.begin());
+            }
         }
     }
 
-    for (int i = 0; i < left.size(); i++)
-        res.push_back(left[i]);
-    for (int j = 0; j < right.size(); j++)
-        res.push_back(right[j]);
+    res.insert(res.end(), left.begin(), left.end());
+    res.insert(res.end(), right.begin(), right.end());
 
     return res;
 }

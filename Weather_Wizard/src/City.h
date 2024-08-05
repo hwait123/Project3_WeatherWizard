@@ -57,14 +57,14 @@ public:
 	
 	//calculations
 	Date* averageData(const vector<Date*>& date_);
-    pair <Date*, duration<double, micro>> findHighestTemperature(map<string, Date *> &dates_);
-    pair <Date*, duration<double, micro>> findLowestTemperature(map<string, Date *> &dates_);
-	pair <Date*, duration<double, micro>> findMaxWindSpeed(map<string, Date*>& dates_);
-	pair <Date*, duration<double, micro>> findMaxPrecipitation(map<string, Date*>& dates_);
+	pair <Date*, duration<double, micro>> findHighestTemperature(map<string, Date*>& dates_, const string& sortMethod);
+	pair <Date*, duration<double, micro>> findLowestTemperature(map<string, Date*>& dates_, const string& sortMethod);
+	pair <Date*, duration<double, micro>> findMaxWindSpeed(map<string, Date*>& dates_, const string& sortMethod);
+	pair <Date*, duration<double, micro>> findMaxPrecipitation(map<string, Date*>& dates_, const string& sortMethod);
 	Date* GetResultStdSort(pair <string, string> sortBasedOn, vector<Date*>& allAverages);
-	vector<Date*> slice(vector<Date*> dates, int start, int end);
-	vector<Date*> merge(vector<Date*> left, vector<Date*> right, string sortBasedOn);
-	vector<Date*> mergeSort(vector<Date*> dates, string sortBasedOn);
+	vector<Date*> slice(const vector<Date*>& dates, int start, int end);
+	vector<Date*> merge(vector<Date*> left, vector<Date*> right, const string& sortBasedOn);
+	vector<Date*> mergeSort(vector<Date*> dates, const string& sortBasedOn);
 	
 	//behaviors
 	void assembleMapBetweenDates(map<string, Date*>& newMap, const string& startDate, const string& endDate);
