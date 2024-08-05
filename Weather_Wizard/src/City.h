@@ -59,7 +59,7 @@ public:
 	Date* findMaxPrecipitation(map<string, vector<Date*>>& dates_);
 	
 	//behaviors
-	void assembleMapBetweenDates(map<string, vector<Date*>>& newMap, const string& startDate, const string& endDate);
+	void assembleMapBetweenDates(map<string, Date*>& newMap, const string& startDate, const string& endDate);
 	int dateToInt(const string& date);
 	void LoadAveragesVec(vector<Date*>& allAverages, map<string, vector<Date*>>& dates_);
 	Date* GetResultStdSort(pair <string, string> sortBasedOn, vector<Date*>& allAverages);
