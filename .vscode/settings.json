@@ -4,6 +4,7 @@
         "xstring": "cpp",
         "vector": "cpp",
         "utility": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "stdexcept": "cpp"
     }
 }

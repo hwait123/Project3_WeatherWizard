@@ -70,7 +70,6 @@ public:
 	void assembleMapBetweenDates(map<string, Date*>& newMap, const string& startDate, const string& endDate);
 	int dateToInt(const string& date);
 	void LoadAveragesVec(vector<Date*>& allAverages, map<string, Date*>& dates_);
-	void LoadAveragesVec(vector<Date*>& allAverages, map<string, Date*>& dates_);
 
     //search
 
