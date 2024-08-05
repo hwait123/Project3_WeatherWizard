@@ -148,7 +148,7 @@ Date* City::averageData(const vector<Date*>& date_) {
 	return newPtr;
 }
 
-Date* City::findHighestTemperature(map<string, vector<Date*>>& dates_) {
+Date* City::findHighestTemperature(map<string, Date*>& dates_) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -168,7 +168,7 @@ Date* City::findHighestTemperature(map<string, vector<Date*>>& dates_) {
     return highestTempDate;
 }
 
-Date* City::findLowestTemperature(map<string, vector<Date*>>& dates_) {
+Date* City::findLowestTemperature(map<string, Date*>& dates_) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -188,7 +188,7 @@ Date* City::findLowestTemperature(map<string, vector<Date*>>& dates_) {
     return lowestTempDate;
 }
 
-Date* City::findMaxWindSpeed(map<string, vector<Date*>>& dates_) {
+Date* City::findMaxWindSpeed(map<string, Date*>& dates_) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -208,7 +208,7 @@ Date* City::findMaxWindSpeed(map<string, vector<Date*>>& dates_) {
     return maxWindSpeedDate;
 }
 
-Date* City::findMaxPrecipitation(map<string, vector<Date*>>& dates_) {
+Date* City::findMaxPrecipitation(map<string, Date*>& dates_) {
     auto start = high_resolution_clock::now();
 
     if (dates_.empty()) {
@@ -285,13 +285,10 @@ void insertionSort(vector<Date*>& dates) {
 }
 /********************************************************************************/
 
-void City::LoadAveragesVec(vector<Date*>& allAverages, map<string, vector<Date*>>& dates_)
+void City::LoadAveragesVec(vector<Date*>& allAverages, map<string, Date*>& dates_)
 {
-    for (auto& entry : dates_) {
-        if (!entry.second.empty()) {
-            allAverages.push_back(entry.second[0]);
-        }
-    }
+    for (auto& entry : dates_) 
+        allAverages.push_back(entry.second);
 
     if (allAverages.empty()) {
         throw runtime_error("No valid Date objects found.");
