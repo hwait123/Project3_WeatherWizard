@@ -96,6 +96,8 @@ int main()
     //
     ///////////////////////////////////////////////////////
 
+    //create new map object and load with dates within given range
+
     cout << endl << endl << "Making magic happen..." << endl << endl;
 
     //results
@@ -107,7 +109,7 @@ int main()
     cout << "Lowest temperature: " << endl;
     //print lowest temperature on what day
 
-    //Keep to fasted and highest precipitation, because slowest and lowest will probably be 0
+    //Keep to fastest and highest precipitation, because slowest and lowest will probably be 0
     //might change mind here
     cout << "Fastest wind speed: " << endl;
     //print results
