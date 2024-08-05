@@ -158,8 +158,8 @@ Date* City::findHighestTemperature(map<string, vector<Date*>>& dates_) {
     vector<Date*> allAverages;
     
     LoadAveragesVec(allAverages, dates_);
-    
-    Date* highestTempDate = GetResultStdSort("high", allAverages);
+
+    Date* highestTempDate = GetResultStdSort(make_pair("air_temp", "high"), allAverages);
 
     auto end = high_resolution_clock::now();
     duration<double> elapsed = end - start;
@@ -179,7 +179,7 @@ Date* City::findLowestTemperature(map<string, vector<Date*>>& dates_) {
     
     LoadAveragesVec(allAverages, dates_);
 
-    Date* lowestTempDate = GetResultStdSort("low", allAverages);
+    Date* lowestTempDate = GetResultStdSort(make_pair("air_temp", "low"), allAverages);
 
     auto end = high_resolution_clock::now();
     duration<double> elapsed = end - start;
@@ -199,7 +199,7 @@ Date* City::findMaxWindSpeed(map<string, vector<Date*>>& dates_) {
     
     LoadAveragesVec(allAverages, dates_);
 
-    Date* maxWindSpeedDate = GetResultStdSort("high", allAverages);
+    Date* maxWindSpeedDate = GetResultStdSort(make_pair("wind_speed", "high"), allAverages);
 
     auto end = high_resolution_clock::now();
     duration<double> elapsed = end - start;
@@ -219,7 +219,7 @@ Date* City::findMaxPrecipitation(map<string, vector<Date*>>& dates_) {
     
     LoadAveragesVec(allAverages, dates_);
 
-    Date* maxPrecipitationDate = GetResultStdSort("high", allAverages);
+    Date* maxPrecipitationDate = GetResultStdSort(make_pair("precipitation", "high"), allAverages);
 
     auto end = high_resolution_clock::now();
     duration<double> elapsed = end - start;
@@ -232,7 +232,7 @@ int City::dateToInt(const string& date) {
     return stoi(date.substr(0, 4)) * 10000 + stoi(date.substr(5, 2)) * 100 + stoi(date.substr(8, 2));
 }
 
-map<string, vector<Date*>> City::assembleMapBetweenDates(map<string, vector<Date*>>& dates, const string& startDate, const string& endDate) {
+/*map<string, vector<Date*>> City::assembleMapBetweenDates(map<string, vector<Date*>>& dates, const string& startDate, const string& endDate) {
     int start = dateToInt(startDate);
     int end = dateToInt(endDate);
 
@@ -249,6 +249,25 @@ map<string, vector<Date*>> City::assembleMapBetweenDates(map<string, vector<Date
     }
 
     return newMap;
+}*/
+
+//adjusted function to accept an empty map as input and load map with values within range,
+//because main.cpp will not have access to the object's map
+void City::assembleMapBetweenDates(map<string, vector<Date*>>& newMap, const string& startDate, const string& endDate) {
+    int start = dateToInt(startDate);
+    int end = dateToInt(endDate);
+
+    if (start > end) {
+        throw invalid_argument("Start date must be earlier than or equal to end date.");
+    }
+
+    for (auto& entry : dates) {
+        int currentDate = dateToInt(entry.first);
+        if (currentDate >= start && currentDate <= end) {
+            newMap[entry.first] = entry.second;
+        }
+    }
+
 }
 
 /********** Can't do insertion sort, so will have to change *********************/
@@ -278,17 +297,32 @@ void City::LoadAveragesVec(vector<Date*>& allAverages, map<string, vector<Date*>
     }
 }
 
-Date* City::GetResultStdSort(string lowOrHigh, vector<Date*>& allAverages)
+Date* City::GetResultStdSort(pair <string, string> sortBasedOn, vector<Date*>& allAverages)
 {
     //sort in decending order
-    sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
-        return a->precipitation > b->precipitation;
-    });
+    if (sortBasedOn.first == "precipitation")
+    {
+        sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
+            return a->precipitation > b->precipitation;
+        });
+    }
+    else if (sortBasedOn.first == "air_temp")
+    {
+        sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
+            return a->air_temp > b->air_temp;
+        });
+    }
+    else if (sortBasedOn.first == "wind_speed")
+    {
+        sort(allAverages.begin(), allAverages.end(), [](Date* a, Date* b) {
+            return a->wind_speed > b->wind_speed;
+        });
+    }
 
     //if looking for high value, return front of vector
-    if (lowOrHigh == "high")
+    if (sortBasedOn.second == "high")
         return allAverages.front();
     //if looking for low value, return end of vector
-    if(lowOrHigh == "low")
+    if(sortBasedOn.second == "low")
         return allAverages[allAverages.size() - 1];
 }
