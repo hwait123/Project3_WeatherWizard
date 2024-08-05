@@ -248,7 +248,8 @@ int City::dateToInt(const string& date) {
         }
     }
 
-    return newMap;
+    return newMap; 
+    
 }*/
 
 //adjusted function to accept an empty map as input and load map with values within range,
