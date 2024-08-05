@@ -133,18 +133,18 @@ void City::AddDate(string date, string time, string air_temp, string wind_speed,
 }
 
 Date* City::averageData(const vector<Date*>& date_) {
-	float averageTemp = 0.0f;
-	float averageWindSpeed = 0.0f;
-	float averagePrecipitation = 0.0f;
-	int totalHours = date_.size();
+	float sumTemp = 0.0f;
+	float sumWindSpeed = 0.0f;
+	float sumPrecipitation = 0.0f;
+	int totalHours = float(date_.size());
 	//For every element in our 'date' vector (every hour) add it's value to the average
 	for (const auto& data : date_) { 
-        averageTemp += data->air_temp;
-        averageWindSpeed += data->wind_speed;
-        averagePrecipitation += data->precipitation;
+        sumTemp += data->air_temp;
+        sumWindSpeed += data->wind_speed;
+        sumPrecipitation += data->precipitation;
     }
 	//Returns the first hour's name, but an averaged float for all other data
-    Date* newPtr = new Date(date_[0]->date, averageTemp / totalHours, averageWindSpeed / totalHours, averagePrecipitation / totalHours);
+    Date* newPtr = new Date(date_[0]->date, sumTemp / totalHours, sumWindSpeed / totalHours, sumPrecipitation / totalHours);
 	return newPtr;
 }
 
