@@ -57,6 +57,7 @@ public:
 	
 	//calculations
 	Date* averageData(const vector<Date*>& date_);
+	Date* getAverageWeatherData(const map<string, Date*>& dates_);
 	pair <Date*, duration<double, micro>> findHighestTemperature(map<string, Date*>& dates_, const string& sortMethod);
 	pair <Date*, duration<double, micro>> findLowestTemperature(map<string, Date*>& dates_, const string& sortMethod);
 	pair <Date*, duration<double, micro>> findMaxWindSpeed(map<string, Date*>& dates_, const string& sortMethod);

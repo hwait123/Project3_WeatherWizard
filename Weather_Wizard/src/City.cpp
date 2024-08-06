@@ -386,3 +386,23 @@ vector<Date*> City::merge(vector<Date*> left, vector<Date*> right, const string&
 
     return res;
 }
+
+Date* City::getAverageWeatherData(const map<string, Date*>& dates_) {
+    float sumTemp = 0.0f;
+    float sumWindSpeed = 0.0f;
+    float sumPrecipitation = 0.0f;
+    int totalDays = dates_.size();
+
+    for (const auto& entry : dates_) {
+        sumTemp += entry.second->air_temp;
+        sumWindSpeed += entry.second->wind_speed;
+        sumPrecipitation += entry.second->precipitation;
+    }
+
+    if (totalDays == 0) {
+        throw runtime_error("No valid Date objects found for the specified range.");
+    }
+
+    Date* avgDate = new Date("Average", sumTemp / totalDays, sumWindSpeed / totalDays, sumPrecipitation / totalDays);
+    return avgDate;
+}

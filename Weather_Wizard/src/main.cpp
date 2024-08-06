@@ -82,10 +82,16 @@ int main()
         newCity.assembleMapBetweenDates(newMap, startDate, endDate);
 
         cout << endl << endl << "Making magic happen..." << endl << endl;
-
+        
         //results
         cout << endl << "For dates " << startDate << " through " << endDate << ":" << endl << endl;
-        
+
+        Date* avgData = newCity.getAverageWeatherData(newMap);
+        cout << "Average Temperature: " << avgData->air_temp << " degrees celsius" << endl;
+        cout << "Average Wind Speed: " << avgData->wind_speed << " meters per second" << endl;
+        cout << "Average Precipitation: " << avgData->precipitation <<  " millimeters per hour\n" << endl;
+        delete avgData;
+
         cout << "(Calculated with std::sort)" << endl;
         cout << "Highest temperature, calculated in " << newCity.findHighestTemperature(newMap, "std_sort").second.count() << " microseconds: " << newCity.findHighestTemperature(newMap, "std_sort").first->air_temp << " degrees celsius" << endl;
         cout << "Lowest temperature, calculated in " << newCity.findLowestTemperature(newMap, "std_sort").second.count() << " microseconds: " << newCity.findLowestTemperature(newMap, "std_sort").first->air_temp << " degrees celsius" << endl;
