@@ -34,7 +34,7 @@ int main()
     )";
 
     std::cout << logo << endl;
-    std::cout << "(Logo created at https://patorjk.com/software/taag/)" << endl << endl;    
+    std::cout << "(Logo created at https://patorjk.com/software/taag/)" << endl << endl << endl;    
 
     while(true)
     {
