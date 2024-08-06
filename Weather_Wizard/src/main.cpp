@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-#include <iomanip>
 
 #include "City.h"
 
@@ -83,6 +82,7 @@ int main()
 
         cout << endl << endl << "Making magic happen..." << endl << endl;
         
+        cout << fixed << setprecision(2);
         //results
         cout << endl << "For dates " << startDate << " through " << endDate << ":" << endl << endl;
 
