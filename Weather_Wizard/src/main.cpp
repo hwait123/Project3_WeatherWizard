@@ -144,7 +144,7 @@ bool IsValidDate(City city, string date)
 
 bool IsValidRange(string startDate, string endDate)
 {
-    //I think this will work, but need to test;
+    //check if start date is before end date
     if (startDate > endDate)
         return false;
     return true;
