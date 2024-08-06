@@ -1,0 +1,7 @@
+Steps to run project:
+1. Using your terminal, locate the project's file.
+2. Type the command
+      g++ Weather_Wizard/src/main.cpp Weather_Wizard/src/city.cpp -o main.exe
+   to create the .exe file.
+3. Run main.exe with the command
+      ./main.exe
